@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import bridge from '@vkontakte/vk-bridge';
-import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, Root, Button, PanelSpinner } from '@vkontakte/vkui';
+import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, Root, Button, PanelSpinner, ScreenSpinner } from '@vkontakte/vkui';
 
 import Icon28Play from '@vkontakte/icons/dist/28/play';
 import Icon28HistoryBackwardOutline from '@vkontakte/icons/dist/28/history_backward_outline';
@@ -14,7 +15,6 @@ import More from "../src/panels/More"
 import Learn from "../src/panels/Learn"
 
 
-
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -25,6 +25,7 @@ class App extends React.Component {
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
+			epiclock: false,
 			authToken : null,
 			history : ['st_play'],
 			fetchedUser: '',
@@ -97,8 +98,18 @@ class App extends React.Component {
 	}
 
 	endLearning() {
+		let user = this.state.fetchedUser;
+		if (!user.first_name) {
+			bridge.send('VKWebAppGetUserInfo');
+		}
 		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
 		this.setState({mainview: 'epicview'})
+		this.setState({epiclock: true})
+		axios.post('https://dogeo-backend.herokuapp.com/api/newuser', {user})
+		.then(res => {
+			console.log(res);
+			this.setState({epiclock: false})
+		});
 	}
 
 	onStoryChange (e) {
@@ -130,7 +141,8 @@ class App extends React.Component {
 				</View>
 				<View id="epicview" activePanel="epicpanel"
 					onSwipeBack={this.goBack}
-          history={this.state.history}>
+          history={this.state.history}
+					popout={this.state.epiclock ? <ScreenSpinner /> : null}>
 					<Panel id="epicpanel">
 						<Epic
 							activeStory={this.state.activeStory}

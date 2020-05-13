@@ -82,7 +82,7 @@ class LearnCard extends React.Component {
 }
 
 LearnCard.propTypes = {
-  title: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default LearnCard;

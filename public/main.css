@@ -30,6 +30,16 @@
   user-select: none;
 }
 
+.gradient-text{
+  background: linear-gradient(45deg, #f53f8e, 50%, #f5226f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 
 .logo-do {
   animation: logo-do 3.2s infinite ease-in-out;
@@ -52,4 +62,33 @@
 .Switch--android .Switch__self:checked+.Switch__pseudo::before{
   background: var(--purple-light)!important;
   border-color: var(--purple-dark)!important;
+}
+
+@keyframes gamepadSpin {
+  0%, 100%{
+    transform: rotate(7deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(-7deg) translate(0, 5%);
+  }
+}
+
+
+.icon {
+  animation: gamepadSpin 10s infinite ease-in-out;
+  color: var(--purple-light);
+}
+
+.iconimg{
+  width: 75%;
+}
+
+@media (min-width: 560px){
+  .iconimg{
+    width: 55%;
+  } 
+}
+
+.next-button{
+  background-color: var(--purple-dark)!important;
 }

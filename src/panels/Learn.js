@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar } from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back'
 import bridge from '@vkontakte/vk-bridge';
+import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 
 import logo from '../img/logo.svg'
 import LearnCard from '../panels/elemenst/LearnCard'
@@ -16,7 +17,16 @@ class Learn extends React.Component {
             imageHeight : 350
         }
     }
-    
+  
+  nextCard() {
+    console.log(this.state.slideIndex)
+    if (this.state.slideIndex === 3){
+      this.props.endLearning()
+    } else {
+      this.setState({slideIndex: this.state.slideIndex + 1})
+    }
+  }
+
 	render() {
         let { id, scheme } = this.props
 
@@ -26,16 +36,36 @@ class Learn extends React.Component {
               <div style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
                 <Group>
                   <Gallery
-                    slideWidth="90%"
+                    slideWidth="100%"
                     align="center"
-                    style={{ height: 150 }}
+                    style={{ height: "85vh" }}
                     bullets={(scheme === "bright_light" || scheme === "client_light") ? 'dark': 'light'}
+                    slideIndex={this.state.slideIndex}
+                    onChange={slideIndex => this.setState({slideIndex})}
                   >
                     <LearnCard
                       id={1}
-                      
+                      />
+                    <LearnCard
+                      id={2}
+                      />
+                    <LearnCard
+                      id={3}
+                      />
+                    <LearnCard
+                      id={4}
                       />
                   </Gallery>
+                  <Div style={{marginTop: "2vh", paddingLeft: "2vh", paddingRight: "2vh"}}>
+                    <Button
+                      className="next-button"
+                      after={this.state.slideIndex === 3 ? null: <Icon28ArrowRightOutline/>}
+                      style={{position: "relative", bottom: '10', width: "70%", height: "5vh", left: "15%", fontFamily: "Montserrat", fontSize: "5vh"}}
+                      onClick={() => this.nextCard()}
+                    >
+                      {this.state.slideIndex === 3 ? "Начать!": "Вперёд!"}
+                    </Button>
+                  </Div>
                 </Group>
               </div>
             }

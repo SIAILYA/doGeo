@@ -5,7 +5,6 @@
   "main": "index.js",
   "git": {
     "scripts": {
-      "post-commit": "npm run surge-deploy",
       "pre-push": "npm run surge-deploy"
     }
   },

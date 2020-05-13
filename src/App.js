@@ -1,6 +1,6 @@
 import React from 'react';
 import bridge from '@vkontakte/vk-bridge';
-import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, List, Root, Button } from '@vkontakte/vkui';
+import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, List, Root, Button, PanelSpinner } from '@vkontakte/vkui';
 
 import Icon28More from '@vkontakte/icons/dist/28/more';
 import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
@@ -31,7 +31,7 @@ class App extends React.Component {
 		this.state = {
 			scheme: "bright_light",
 			soft_colors: false,
-			mainview: 'learnview',
+			mainview: 'emptyview',
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
@@ -39,6 +39,7 @@ class App extends React.Component {
 			history : ['st_play'],
 			fetchedUser: '',
 			res: null,
+			response: null,
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -48,17 +49,29 @@ class App extends React.Component {
 		window.addEventListener('popstate', () => this.goBack());
 		bridge.send('VKWebAppGetUserInfo');
 		bridge.subscribe((e) => {
-			switch (e.detail.type) {
-				case 'VKWebAppUpdateConfig':
-					this.setState({ scheme: e.detail.data.scheme });
-				case 'VKWebAppGetUserInfoResult':
-					this.setState({ fetchedUser: e.detail.data });
-				default:
-
+			if (e.detail.type === 'VKWebAppUpdateConfig')
+			{
+				this.setState({ scheme: e.detail.data.scheme })
+			} else 
+			if (e.detail.type === 'VKWebAppGetUserInfoResult') {
+				this.setState({ fetchedUser: e.detail.data });
+			} else
+			if (e.detail.type === 'VKWebAppStorageGetResult') {
+				if (e.detail.data.keys[0].key === 'endLearning') {
+					if (!e.detail.data.keys[0].value || e.detail.data.keys[0].value === 'false'){
+						this.setState({mainview: 'learnview'})
+					} else {
+						this.setState({mainview: 'epicview'})
+					}
+				}
 			}
-		});
-		fetch("http://tasty-crab-17.serverless.social/api/rating")
-      .then(res => console.log());
+		})
+	}
+
+	apitest() {
+		console.log('api!!')
+		fetch('https://dogeo-backend.herokuapp.com/api/rating')
+			.then(res => res.json()).then(res => console.log(res[0]))
 	}
 
 	updateTheme() {
@@ -93,6 +106,13 @@ class App extends React.Component {
 		}
 	}
 
+	endLearning() {
+		console.log('end learning!')
+		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
+		this.setState({mainview: 'epicview'})
+		console.log(this)
+	}
+
 	onStoryChange (e) {
 		const history = [...this.state.history];
 		history.push('st_' + e.currentTarget.dataset.story);
@@ -108,9 +128,19 @@ class App extends React.Component {
 			scheme={this.state.scheme}
 			>
 			<Root activeView={this.state.mainview}>
-				<View
-					id="epicview"
-					activePanel="epicpanel"
+				<View id="emptyview" activePanel="spinnerpanel">
+					<Panel id='spinnerpanel'>
+						<PanelSpinner />
+					</Panel>
+				</View>
+				<View id="learnview" activePanel="learnpanel">
+						<Learn
+							id="learnpanel"
+							scheme={this.state.scheme}
+							endLearning={() => this.endLearning()}
+						/>
+				</View>
+				<View id="epicview" activePanel="epicpanel"
 					onSwipeBack={this.goBack}
           history={this.state.history}>
 					<Panel id="epicpanel">
@@ -158,7 +188,7 @@ class App extends React.Component {
 							<View id="history" activePanel="historypanel">
 								<Panel id="historypanel">
 									<PanelHeader>История</PanelHeader>
-									<Button onClick={() => this.updateTheme()}>Тема</Button>
+									<Button onClick={() => {bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})}}>btn</Button>
 								</Panel>
 							</View>
 							<View id="more" activePanel="morepanel">
@@ -172,14 +202,8 @@ class App extends React.Component {
 					</Epic>
 					</Panel>
 				</View>
-				<View id='gameview'>
+				<View id='gameview' >
 					
-				</View>
-				<View id="learnview" activePanel="learnpanel">
-						<Learn
-							id="learnpanel"
-							scheme={this.state.scheme}
-						/>
 				</View>
 			</Root>
 				

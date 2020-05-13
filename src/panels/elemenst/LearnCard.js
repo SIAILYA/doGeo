@@ -20,11 +20,11 @@ class LearnCard extends React.Component {
 		return (
         <Group separator="hide">
           { id === 1 &&
-            <div>
+            <div style={{textAlign: "center"}}>
               <div>
                 <p className="hello">Привет!</p>
               </div>
-              <div style={{textAlign: 'right'}}>
+              <div style={{textAlign: 'center'}}>
                 <p className="dogeo">Это doGeo - </p>
                 <p>сервис, который превращает географию в веселую игру!</p>
               </div>

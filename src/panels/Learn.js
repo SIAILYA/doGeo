@@ -24,7 +24,7 @@ class Learn extends React.Component {
             <Panel id={id} style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
             {
               <div style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
-                <Group header={<Header mode="secondary">Centered</Header>}>
+                <Group>
                   <Gallery
                     slideWidth="90%"
                     align="center"

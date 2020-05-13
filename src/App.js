@@ -17,6 +17,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import Start from "../src/panels/Start"
 import More from "../src/panels/More"
+import Learn from "../src/panels/Learn"
 
 
 function getRandomInt(min, max) {
@@ -174,7 +175,7 @@ class App extends React.Component {
 				<View id='gameview'>
 					
 				</View>
-				<View id="learnview">
+				<View id="learnview" activePanel="learnpanel">
 						<Learn
 							id="learnpanel"
 							scheme={this.state.scheme}

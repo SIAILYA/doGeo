@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar, Card, CardGrid } from '@vkontakte/vkui';
-import Icon28Play from '@vkontakte/icons/dist/28/play';
-import Icon28GameOutline from '@vkontakte/icons/dist/28/game_outline';
-import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
+import { Group } from '@vkontakte/vkui';
 import gamepad from "../../img/gamepad.svg"
 import question from "../../img/question.svg"
 import earth from "../../img/earth.svg"
@@ -34,7 +31,7 @@ class LearnCard extends React.Component {
                 <p style={{marginBottom: 0, marginTop: 10}}>Сервис, который превращает географию в увлекательную игру!</p>
               </div>
               <div className="icon" style={{marginTop: "10vh"}}>
-                <img className="iconimg" src={gamepad}/>
+                <img className="iconimg" src={gamepad} alt="gamepad"/>
               </div>
             </div>
           }
@@ -44,11 +41,11 @@ class LearnCard extends React.Component {
                 <p className="hello gradient-text" style={{fontSize: "12vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Отвечайте на вопросы</p>
               </div>
               <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
-                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Разнообразные режимы</p>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>В разнообразных режимах</p>
                 <p style={{marginBottom: 0, marginTop: 10}}>Набирайте очки рейтинга и поднимайтесь в турнирной таблице!</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
-                <img className="iconimg" src={question}/>
+                <img className="iconimg" src={question} alt="question"/>
               </div>
             </div>
           }
@@ -62,7 +59,7 @@ class LearnCard extends React.Component {
                 <p style={{marginBottom: 0, marginTop: 10}}>Выясните, кто настоящий знаток географии!</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
-                <img className="iconimg" src={share}/>
+                <img className="iconimg" src={share} alt="share"/>
               </div>
             </div>
           }
@@ -75,7 +72,7 @@ class LearnCard extends React.Component {
                 <p className="dogeo gradient-text" style={{fontSize: "6vw", marginBottom: 0, marginTop: 30, fontWeight: 600}}>Погрузиться в мир географии?</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
-                <img className="iconimg" src={earth}/>
+                <img className="iconimg" src={earth} alt="earth"/>
               </div>
             </div>
           }

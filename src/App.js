@@ -1,14 +1,8 @@
 import React from 'react';
 import bridge from '@vkontakte/vk-bridge';
-import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, List, Root, Button, PanelSpinner } from '@vkontakte/vkui';
+import { View, ConfigProvider, Epic, Tabbar, TabbarItem, Panel, PanelHeader, Root, Button, PanelSpinner } from '@vkontakte/vkui';
 
-import Icon28More from '@vkontakte/icons/dist/28/more';
-import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
-import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
-import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
-import Icon28Notifications from '@vkontakte/icons/dist/28/notifications';
 import Icon28Play from '@vkontakte/icons/dist/28/play';
-import Icon28ListOutline from '@vkontakte/icons/dist/28/list_outline';
 import Icon28HistoryBackwardOutline from '@vkontakte/icons/dist/28/history_backward_outline';
 import Icon28MenuOutline from '@vkontakte/icons/dist/28/menu_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
@@ -20,9 +14,6 @@ import More from "../src/panels/More"
 import Learn from "../src/panels/Learn"
 
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
 class App extends React.Component {
 	constructor(props) {
@@ -30,7 +21,6 @@ class App extends React.Component {
 
 		this.state = {
 			scheme: "bright_light",
-			soft_colors: false,
 			mainview: 'emptyview',
 			activePanel : 'play',
 			activeFeed: 'play',
@@ -45,7 +35,7 @@ class App extends React.Component {
 		this.onStoryChange = this.onStoryChange.bind(this);
 	}
 
-	componentWillMount() {	
+	componentDidMount() {	
 		window.addEventListener('popstate', () => this.goBack());
 		bridge.send('VKWebAppGetUserInfo');
 		bridge.subscribe((e) => {
@@ -84,7 +74,7 @@ class App extends React.Component {
 		}
  }
 
-	go = (e, object) => {
+	go = (e) => {
 		let activeElement = e.currentTarget.dataset.to
 		const history = [...this.state.history];
 		history.push(activeElement);
@@ -107,10 +97,8 @@ class App extends React.Component {
 	}
 
 	endLearning() {
-		console.log('end learning!')
 		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
 		this.setState({mainview: 'epicview'})
-		console.log(this)
 	}
 
 	onStoryChange (e) {

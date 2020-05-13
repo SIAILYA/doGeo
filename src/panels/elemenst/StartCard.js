@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar, Card, CardGrid } from '@vkontakte/vkui';
-import Icon28Play from '@vkontakte/icons/dist/28/play';
+import { Button, Group, Card, CardGrid } from '@vkontakte/vkui';
 
 
 class StartCard extends React.Component {

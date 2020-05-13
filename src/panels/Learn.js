@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar } from '@vkontakte/vkui';
-import Icon24Back from '@vkontakte/icons/dist/24/back'
-import bridge from '@vkontakte/vk-bridge';
+import { Panel, Button, Div, Gallery, Group } from '@vkontakte/vkui';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 
-import logo from '../img/logo.svg'
 import LearnCard from '../panels/elemenst/LearnCard'
 
 class Learn extends React.Component {

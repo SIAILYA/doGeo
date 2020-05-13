@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar } from '@vkontakte/vkui';
-import Icon24Back from '@vkontakte/icons/dist/24/back'
-import bridge from '@vkontakte/vk-bridge';
+import { Panel, PanelHeader, Div, Gallery, Group, SimpleCell } from '@vkontakte/vkui';
+import Icon24BrowserForward from '@vkontakte/icons/dist/24/browser_forward';
+import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
-import logo from '../img/logo.svg'
+
 import StartCard from '../panels/elemenst/StartCard.js'
 
 class Start extends React.Component {
@@ -60,6 +60,14 @@ class Start extends React.Component {
                       />
                     </Gallery>
                   </Group>
+                  <div style={{textAlign: "center", paddingLeft: "5%", paddingRight: "5%", paddingBottom: "5%"}}>
+                      <SimpleCell
+                        disabled
+                        before={<Icon24BrowserBack fill="var(--purple-dark)"/>}
+                        after={<Icon24BrowserForward fill="var(--purple-dark)" />}>
+                        Свайпните для выбора режима
+                      </SimpleCell>
+                  </div>
                   </div>
                 </Div>
               </div>

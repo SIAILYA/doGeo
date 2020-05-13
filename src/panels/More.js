@@ -1,19 +1,17 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, FixedLayout, Button, Div, Header, Gallery, Group, PanelHeaderBack, Avatar, SimpleCell, Switch, Tooltip, PanelHeaderButton, ModalPage,
+import { Panel, PanelHeader, Button, Div, Header, Group, Avatar, SimpleCell, Switch, PanelHeaderButton, ModalPage,
   ModalRoot, ModalPageHeader } from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back'
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
 import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
-import Icon28QrCodeOutline from '@vkontakte/icons/dist/28/qr_code_outline';
 import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
 import Icon28CopyOutline from '@vkontakte/icons/dist/28/copy_outline';
+import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
 
 import bridge from '@vkontakte/vk-bridge';
 
-import logo from '../img/logo.svg'
-import StartCard from '../panels/elemenst/StartCard.js'
 
 class More extends React.Component {
 	constructor(props) {
@@ -104,13 +102,7 @@ class More extends React.Component {
             <Panel id={id} style={{ marginBottom : 5 }}>
             {
               <div>
-                <Tooltip
-                  text='Нажмите на меню и выберите "Открыть QR-Код" :)'
-                  offsetX={300} 
-                  isShown={this.state.qrTooltip}
-                  onClose={() => this.setState({ qrTooltip: false })}>
-                  <PanelHeader>Другое</PanelHeader>
-                </Tooltip>
+                <PanelHeader>Другое</PanelHeader>
                 <Div
                   style={{paddingRight: "0", paddingLeft: "0", paddingBottom: "0"}}>
                   <Group>
@@ -161,13 +153,6 @@ class More extends React.Component {
                     >
                       Отправить ссылку
                     </SimpleCell>
-                    <SimpleCell
-                      before={<Icon28QrCodeOutline fill="var(--purple-light)"/>}
-                      description="Сканируйте камерой VK"
-                      onClick={() => {this.setState({qrTooltip: true})}}
-                    >
-                      Показать QR-код
-                    </SimpleCell>
                   </Group>
                   <Group>
                     <Header mode="secondary">Контакты</Header>
@@ -185,6 +170,13 @@ class More extends React.Component {
                       onClick={() => {this.donate()}}
                     >
                       Сделать пожертвование
+                    </SimpleCell>
+                    <SimpleCell
+                      before={<Icon28InboxOutline fill="var(--purple-light)"/>}
+                      description="Или сообщить об ошибке"
+                      disabled
+                    >
+                      Предложить факт
                     </SimpleCell>
                   </Group>
                   <Group>

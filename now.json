@@ -1,13 +1,6 @@
 {
   "version": 1,
   "name": "dogeo",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": { "distDir": "build" }
-    }
-  ],
   "routes": [
     {
       "src": "/static/(.*)",

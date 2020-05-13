@@ -30,7 +30,7 @@ class App extends React.Component {
 		this.state = {
 			scheme: "bright_light",
 			soft_colors: false,
-			mainview: 'epicview',
+			mainview: 'learnview',
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
@@ -175,7 +175,10 @@ class App extends React.Component {
 					
 				</View>
 				<View id="learnview">
-
+						<Learn
+							id="learnpanel"
+							scheme={this.state.scheme}
+						/>
 				</View>
 			</Root>
 				

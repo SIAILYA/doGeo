@@ -24,12 +24,12 @@
       "dest": "/service-worker.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/index.html",
       "headers": { "cache-control": "s-maxage=0" },
       "dest": "/index.html"
     },
     {
-      "src": "/(.*)",
+      "src": "/main.css",
       "headers": { "cache-control": "s-maxage=0" },
       "dest": "/main.css"
     }

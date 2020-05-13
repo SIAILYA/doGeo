@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+:root{
+  --purple-light: #f53f8e;
+  --purple-dark: #f5226f;
+  --soft-light: #F98BBB;
+  --soft-datk: #F8649A;
+}
+
+.TabbarItem--selected{
+  color: var(--purple-light)!important;
+}
+
+.Gallery__bullet--active{
+  background-color: var(--purple-light)!important;
+}
+
+.logo-text{
+  margin: 0;
+  font-size: 28vw;
+  font-weight: 700;
+  line-height: 0.9;
+
+  background: linear-gradient(45deg, #f53f8e, 50%, #f5226f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+
+.logo-do {
+  animation: logo-do 3.2s infinite ease-in-out;
+}
+
+@keyframes logo-do {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 15%);
+  }
+}
+
+.Switch--ios .Switch__self:checked+.Switch__pseudo, .Switch--android .Switch__self:checked+.Switch__pseudo{
+  background: var(--soft-light)!important;
+  border-color: var(--soft-datk)!important;
+}
+
+.Switch--android .Switch__self:checked+.Switch__pseudo::before{
+  background: var(--purple-light)!important;
+  border-color: var(--purple-dark)!important;
+}

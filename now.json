@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 1,
   "name": "dogeo",
   "builds": [
     {
@@ -27,7 +27,7 @@
       "src": "/(.*)",
       "headers": { "cache-control": "s-maxage=0" },
       "dest": "/index.html"
-    }
+    },
     {
       "src": "/(.*)",
       "headers": { "cache-control": "s-maxage=0" },

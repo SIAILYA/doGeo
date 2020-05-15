@@ -241,6 +241,8 @@ class App extends React.Component {
 						id='lggameendpanel'
 						lastGame={this.state.lastGame}
 						menuReturn={this.menuReturn.bind(this)}
+						user={this.state.fetchedUser}
+						questions={this.state.questions}
 						/>
 				</View>
 			</Root>

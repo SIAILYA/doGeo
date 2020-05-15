@@ -1,10 +1,12 @@
 import React from 'react';
+import axios from 'axios';
+import bridge from '@vkontakte/vk-bridge';
 // import PropTypes from 'prop-types';
-import { Panel, PanelHeader, Button } from '@vkontakte/vkui';
+import { Panel, PanelHeader, Button, PanelSpinner } from '@vkontakte/vkui';
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 
-import {PHRASES} from '../Config'
+import {PHRASES, BACKEND} from '../Config'
 
 class LGGameEnd extends React.Component {
 	constructor(props) {
@@ -12,7 +14,10 @@ class LGGameEnd extends React.Component {
         
         this.state = {
             slideIndex: 0,
-            imageHeight : 350
+            imageHeight : 350,
+            sendRating: false,
+            lockGameEnd: false,
+
         }
     }
   
@@ -28,6 +33,20 @@ class LGGameEnd extends React.Component {
 
   getPhrase(answers) {
     return PHRASES[Math.round(this.countRights(answers)/answers.length) * 5 - 1];
+  }
+
+  sendResult(ratingShift, user, lastGame, questions){
+    let now = new Date();
+    let data = {
+      "user_id": user.id,
+      "rating_shift": ratingShift,
+      "game_data": {'date': now, 'answers': lastGame, 'questions': questions}
+    }
+    this.setState({lockGameEnd: true})
+    axios.post(BACKEND + '/api/increacerating', data)
+    .then(response => {
+      this.setState({lockGameEnd: false})
+    })
   }
 
   getRatingShift(lg){
@@ -60,13 +79,30 @@ class LGGameEnd extends React.Component {
     return 'Вы заработали ' + ratingShift + ' ' + word + '!';
   }
 
+  getRatingShiftInt(lg){
+    let rights = this.countRights(lg);
+    let ratingShift = Math.round(rights - (lg.length - rights) * 0.5)
+    return ratingShift;
+  }
+
 	render() {
-    let {id, lastGame, menuReturn} = this.props
+    let {id, lastGame, questions, menuReturn, user} = this.props
+
+    if (!user.first_name){
+      bridge.send('VKWebAppGetUserInfo');
+    }
+
+    if (!this.state.sendRating){
+      this.sendResult(this.getRatingShiftInt(lastGame), user, lastGame, questions)
+      this.setState({sendRating: true})
+    }
 
 		return (
       <Panel id={id}>
         <PanelHeader>Больше - меньше</PanelHeader>
-        <div>
+        {this.state.lockGameEnd 
+        ? <PanelSpinner /> 
+        :<div>
           <div style={{fontSize: '5vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '3vh'}}>
             Игра окончена!
           </div>
@@ -95,7 +131,7 @@ class LGGameEnd extends React.Component {
               В меню 
             </Button>
           </div>
-        </div>
+        </div>}
       </Panel>
 		);
 	}

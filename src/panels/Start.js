@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Div, Gallery, Group, SimpleCell } from '@vkontakte/vkui';
-import Icon28ArrowUpOutline from '@vkontakte/icons/dist/28/arrow_up_outline';
 
 import StartCard from '../panels/elemenst/StartCard.js'
 

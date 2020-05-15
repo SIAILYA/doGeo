@@ -41,6 +41,7 @@ class LGGame extends React.Component {
     } else {
       answer = 'Greater'
     }
+    answers.push(answer)
     this.setState({
       currentAnswer: answer,
       slideIndex: this.state.slideIndex + 3,

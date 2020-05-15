@@ -92,5 +92,5 @@
 }
 
 .buttonPurple{
-  background: "linear-gradient(135deg, #f53f8e, 50%, #f5226f)";
+  background: linear-gradient(135deg, #f53f8e, 50%, #f5226f);
 }

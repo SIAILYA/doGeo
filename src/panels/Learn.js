@@ -55,7 +55,7 @@ class Learn extends React.Component {
                   </Gallery>
                   <Div style={{marginTop: "2vh", paddingLeft: "2vh", paddingRight: "2vh"}}>
                     <Button
-                      className="next-button"
+                      className="buttonPurple"
                       after={this.state.slideIndex === 3 ? null: <Icon28ArrowRightOutline/>}
                       style={{position: "relative", bottom: '10', width: "70%", height: "5vh", left: "15%", fontFamily: "Montserrat", fontSize: "5vh"}}
                       onClick={() => this.nextCard()}

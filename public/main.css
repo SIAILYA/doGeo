@@ -66,7 +66,7 @@
   border-color: var(--purple-dark)!important;
 }
 
-@keyframes gamepadSpin {
+@keyframes Spin {
   0%, 100%{
     transform: rotate(7deg) translate(0, 0);
   }
@@ -77,7 +77,7 @@
 
 
 .icon {
-  animation: gamepadSpin 10s infinite ease-in-out;
+  animation: Spin 10s infinite ease-in-out;
   color: var(--purple-light);
 }
 
@@ -91,6 +91,6 @@
   } 
 }
 
-.next-button{
-  background-color: var(--purple-dark)!important;
+.buttonPurple{
+  background: "linear-gradient(135deg, #f53f8e, 50%, #f5226f)";
 }

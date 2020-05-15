@@ -18,7 +18,7 @@ class Start extends React.Component {
     }
     
 	render() {
-        let { id, scheme } = this.props
+        let { id, scheme, startGame } = this.props
 
 		return (
             <Panel id={id} style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
@@ -47,16 +47,20 @@ class Start extends React.Component {
                       bullets={(scheme === "bright_light" || scheme === "client_light") ? 'dark': 'light'}
                     > 
                       <StartCard
-                          title="Верю - не верю"
-                          description='Факты, о которых с ходу (или не совсем) можно сказать "правда" или "ложь".|Ваша задача - докопаться до истины!'
-                        />
-                      <StartCard
                         title="Больше - меньше"
                         description="На каждой карточке вопрос, в котором явно фигурирует некоторое число.|Догадайтесь, в какую сторону мы его изменили"
+                        Gmode='LG'
+                        startGame={startGame}
                       />
+                      <StartCard
+                        title="Верю - не верю"
+                        description='Факты, о которых с ходу (или не совсем) можно сказать "правда" или "ложь".|Ваша задача - докопаться до истины!'
+                        disabled={true}
+                        />
                       <StartCard
                         title="Время - деньги"
                         description='На каждую карточку даётся по 5 секунд, не забудьте прочитать!|Единственное правило: "Не успел - проиграл"!'
+                        disabled={true}
                       />
                     </Gallery>
                   </Group>

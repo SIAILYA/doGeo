@@ -14,7 +14,7 @@ class StartCard extends React.Component {
     }
     
 	render() {
-        let {title, description} = this.props
+    let {title, description, disabled, startGame, Gmode} = this.props
 
 		return (
         <Group separator="hide">
@@ -32,9 +32,22 @@ class StartCard extends React.Component {
                 </div>
               </div>
               <div>
-                <Button stretched size='l' style={{width: "80%", position: "relative", left: "10%",  background: "linear-gradient(135deg, #f53f8e, 50%, #f5226f)"}}>
-                  Играть
-                </Button>
+                {
+                  !disabled &&
+                  <Button
+                  className="buttonPurple"
+                  stretched size='l' 
+                  style={{width: "80%", position: "relative", left: "10%"}}
+                  onClick={() => startGame(Gmode)}>
+                    Играть
+                  </Button>
+                }
+                {
+                  disabled &&
+                  <Button stretched disabled size='l' style={{width: "80%", position: "relative", left: "10%",  background: "linear-gradient(135deg, #bdc3c7, 50%, #2c3e50)"}}>
+                    Уже скоро!
+                  </Button>
+                }
               </div>
             </Card>
           </CardGrid>

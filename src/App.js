@@ -13,7 +13,8 @@ import '@vkontakte/vkui/dist/vkui.css';
 import Start from "../src/panels/Start"
 import More from "../src/panels/More"
 import Learn from "../src/panels/Learn"
-import Game from "../src/panels/Game"
+import LGGame from "./panels/LGGame"
+import LGGameEnd from "./panels/LGGameEnd"
 
 import { BACKEND } from './Config';
 
@@ -24,7 +25,7 @@ class App extends React.Component {
 
 		this.state = {
 			scheme: "bright_light",
-			mainview: 'gameview',
+			mainview: 'emptyview',
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
@@ -34,7 +35,9 @@ class App extends React.Component {
 			fetchedUser: '',
 			res: null,
 			response: null,
-			gameMode: null
+			gameMode: null,
+			lastGame: null,
+			gameview: 'lggamepanel'
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -56,7 +59,7 @@ class App extends React.Component {
 					if (!e.detail.data.keys[0].value || e.detail.data.keys[0].value === 'false'){
 						this.setState({mainview: 'learnview'})
 					} else {
-						this.setState({mainview: 'gameview'})
+						this.setState({mainview: 'epicview'})
 					}
 				}
 			}
@@ -125,6 +128,21 @@ class App extends React.Component {
 		bridge.send('VKWebAppGetUserInfo');
 	}
 
+	startGame(mode){
+		if (mode === 'LG'){
+			this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
+		}
+	}
+	
+	endLGGame(verified) {
+		console.log(verified)
+		this.setState({gameview: 'lggameendpanel', lastGame: verified})
+	}
+
+	menuReturn(){
+		this.setState({mainview: 'epicview'})
+	}
+
 	render() {
 		return (
 			<ConfigProvider
@@ -183,6 +201,7 @@ class App extends React.Component {
 								<Start
 									id="playpanel"
 									scheme={this.state.scheme}
+									startGame={this.startGame.bind(this)}
 									/>
 							</View>
 							<View id="rating" activePanel="ratingpanel">
@@ -208,10 +227,16 @@ class App extends React.Component {
 					</Epic>
 					</Panel>
 				</View>
-				<View id='gameview' activePanel='gamepanel'>
-					<Game
-						id='gamepanel'
-						mode={this.state.gameMode}
+				<View id='gameview' activePanel={this.state.gameview}>
+					<LGGame
+						id='lggamepanel'
+						lastGame={this.state.lastGame}
+						endLGGame={this.endLGGame.bind(this)}
+						/>
+					<LGGameEnd
+						id='lggameendpanel'
+						lastGame={this.state.lastGame}
+						menuReturn={this.menuReturn.bind(this)}
 						/>
 				</View>
 			</Root>

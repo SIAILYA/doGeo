@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Div, Gallery, Group, SimpleCell } from '@vkontakte/vkui';
-import Icon24BrowserForward from '@vkontakte/icons/dist/24/browser_forward';
-import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
-
+import Icon28ArrowUpOutline from '@vkontakte/icons/dist/28/arrow_up_outline';
 
 import StartCard from '../panels/elemenst/StartCard.js'
 
@@ -26,7 +24,7 @@ class Start extends React.Component {
               <div style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
                 <PanelHeader>Играть</PanelHeader>
                 <Div style={{paddingBottom: 0, paddingRight: 0, paddingLeft: 0}}>
-                  <div style={{paddingTop: "5%", paddingLeft: "10%", paddingRight: "10%"}}>
+                  <div className='logo' style={{paddingTop: "5%"}}>
                     <div>
                       <p className="logo-text logo-do">do</p>
                     </div>
@@ -43,7 +41,7 @@ class Start extends React.Component {
                     <Gallery
                       slideWidth="90%"
                       align="center"
-                      style={{ height: 280 }}
+                      style={{ height: 300 }}
                       bullets={(scheme === "bright_light" || scheme === "client_light") ? 'dark': 'light'}
                     > 
                       <StartCard
@@ -66,10 +64,11 @@ class Start extends React.Component {
                   </Group>
                   <div style={{textAlign: "center", paddingLeft: "5%", paddingRight: "5%", paddingBottom: "5%"}}>
                       <SimpleCell
-                        disabled
-                        before={<Icon24BrowserBack fill="var(--purple-dark)"/>}
-                        after={<Icon24BrowserForward fill="var(--purple-dark)" />}>
-                        Свайпните для выбора режима
+                        className="purpleText"
+                        disabled>
+                        <p className="purpleText" style={{marginTop: 0, paddingTop: 0}}>
+                          Свайпните для выбора режима
+                        </p>
                       </SimpleCell>
                   </div>
                   </div>

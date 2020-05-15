@@ -102,7 +102,7 @@ class More extends React.Component {
       let word = ''
       let rating = r
       if (rating < 20) {
-        if (rating <= 5){
+        if (rating >= 5 || rating === 0){
           word = 'очков'
         } else if (rating === 2 || rating === 3 || rating === 4){
           word = 'очка'

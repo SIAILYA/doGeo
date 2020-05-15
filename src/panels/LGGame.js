@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, Gallery, SimpleCell, Avatar } from '@vkontakte/vkui';
+import { Panel, PanelHeader, Gallery } from '@vkontakte/vkui';
 
 import Zoom from 'react-reveal/Zoom';
 import LGQuestionCard from './elemenst/LGQuestionCard';
@@ -15,27 +15,21 @@ class LGGame extends React.Component {
       currentAnswer: null,
       currentQuestion: 0,
       sessionAnswers: [],
+      questions: [],
+      rightAnswers: []
     }   
-  }
-
-  next() {
-    this.setState(
-      { slideIndex: 1 }
-    )
   }
 
   drag(e) {
     if (e.shiftXAbs > 100){
       let answer = e.shiftX > 0 ? 'Greater': 'Lower'
       let answers = this.state.sessionAnswers
-      console.log(answers)
       answers.push(answer)
       this.setState({
         currentAnswer: answer,
         slideIndex: this.state.slideIndex + 3,
         currentQuestion: this.state.currentQuestion + 1,
         sessionAnswers: answers})
-      console.log(this.state.sessionAnswers)
     }
   }
 
@@ -51,39 +45,44 @@ class LGGame extends React.Component {
     return verify;
   }
 
-  render () {
-    let { id, endLGGame } = this.props;
-    let questions = [
-      {
-        id: 1,
-        firstPart: "ВВП России на 2019 год составляет",
-        number: 200,
-        unit: "трлн. руб."
-      },
-      {
-        id: 2,
-        firstPart: "В состав Российской Федерации входит",
-        number: 38,
-        unit: "субъектов"
+  generateQuestionsAnswers(rawQuestions){
+    for (let i = 0; i < rawQuestions.length; i++){
+      let rawQ = rawQuestions[i]
+      let question = {
+        firstPart: rawQ['firstPart'],
+        number: parseFloat(rawQ['variables'][Math.floor(Math.random() * rawQ['variables'].length)]),
+        units: rawQ['units'],
+        target: rawQ['number'],
+        country: rawQ['country'],
+        flag: rawQ['flag']
       }
-    ]
-    let rightAnswers = ["Lower", "Greater"]
+      this.state.questions.push(question)
+      this.state.rightAnswers.push(question.number > question.target ? "Lower": "Greater")
+    }
+  }
+
+  render () {
+    let { id, endLGGame, questions } = this.props;
+    
+    if (this.state.questions.length === 0){
+      this.generateQuestionsAnswers(questions)
+    }
 
     if (this.state.currentQuestion === questions.length) {
-      endLGGame(this.verifyAnswers(this.state.sessionAnswers, rightAnswers));
+      endLGGame(this.verifyAnswers(this.state.sessionAnswers, this.state.rightAnswers));
       this.setState({currentQuestion: null})
     }
 
     return (
         <Panel id={id}>
           <PanelHeader>Больше - меньше</PanelHeader>
-          <div style={{marginTop: "2vh", paddingLeft: "5%", paddingRight: "5%"}}>
-            <SimpleCell disabled after={<Timer />} before={<Avatar size={40} src={"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/1280px-Flag_of_Russia.svg.png"} />}>Россия</SimpleCell>
-          </div>
+            <div style={{textAlign: "center", marginTop: "5%", fontSize: '2vh'}}>
+              <Timer />
+            </div>
             <Gallery
               slideWidth="90%"
               align="center"
-              style={{ height: "80vh" }}
+              style={{ height: "85vh" }}
               onDragEnd={this.drag.bind(this)}
               slideIndex={this.state.slideIndex}
             >
@@ -91,7 +90,7 @@ class LGGame extends React.Component {
               <div>
                 <div>
                 {
-                  questions.map((question, index, array) => {
+                  this.state.questions.map((question, index, array) => {
                     return(
                       <div key={index}>
                         {
@@ -102,7 +101,9 @@ class LGGame extends React.Component {
                             total={array.length}
                             firstPart={question.firstPart}
                             number={question.number}
-                            unit={question.unit}
+                            unit={question.units}
+                            flag={question.flag}
+                            country={question.country}
                             />
                         </Zoom>
                         }

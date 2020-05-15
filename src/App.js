@@ -37,7 +37,8 @@ class App extends React.Component {
 			response: null,
 			gameMode: null,
 			lastGame: null,
-			gameview: 'lggamepanel'
+			gameview: 'lggamepanel',
+			questions: null
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -115,7 +116,6 @@ class App extends React.Component {
 		this.setState({epiclock: true})
 		axios.post('https://dogeo-backend.herokuapp.com/api/newuser', {user})
 		.then(res => {
-			console.log(res);
 			this.setState({epiclock: false})
 		});
 	}
@@ -130,12 +130,15 @@ class App extends React.Component {
 
 	startGame(mode){
 		if (mode === 'LG'){
-			this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
+			this.setState({ mainview: 'emptyview' })
+			axios.get(BACKEND + '/api/getquestions/7').then(res => {
+				this.setState({questions: res.data})
+				this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
+			})
 		}
 	}
 	
 	endLGGame(verified) {
-		console.log(verified)
 		this.setState({gameview: 'lggameendpanel', lastGame: verified})
 	}
 
@@ -156,11 +159,11 @@ class App extends React.Component {
 					</Panel>
 				</View>
 				<View id="learnview" activePanel="learnpanel">
-						<Learn
-							id="learnpanel"
-							scheme={this.state.scheme}
-							endLearning={() => this.endLearning()}
-						/>
+					<Learn
+						id="learnpanel"
+						scheme={this.state.scheme}
+						endLearning={() => this.endLearning()}
+					/>
 				</View>
 				<View id="epicview" activePanel="epicpanel"
 					onSwipeBack={this.goBack}
@@ -232,6 +235,7 @@ class App extends React.Component {
 						id='lggamepanel'
 						lastGame={this.state.lastGame}
 						endLGGame={this.endLGGame.bind(this)}
+						questions={this.state.questions}
 						/>
 					<LGGameEnd
 						id='lggameendpanel'

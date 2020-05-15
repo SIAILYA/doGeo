@@ -31,6 +31,35 @@
   user-select: none;
 }
 
+.logo{
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+@media (min-width: 560px){
+  .logo-text{
+    margin: 0;
+    font-size: 20vw;
+    font-weight: 700;
+    line-height: 0.9;
+  
+    background: linear-gradient(45deg, #f53f8e, 50%, #f5226f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+
+  .logo{
+    padding-left: 20%;
+    padding-right: 20%;
+  }
+}
+
 .gradient-text{
   background: linear-gradient(45deg, #f53f8e, 50%, #f5226f);
   background-clip: text;
@@ -94,3 +123,9 @@
 .buttonPurple{
   background: linear-gradient(135deg, #f53f8e, 50%, #f5226f);
 }
+
+.purpleText{
+  color: var(--purple-dark)!important;
+  font-family: "Montserrat";
+}
+

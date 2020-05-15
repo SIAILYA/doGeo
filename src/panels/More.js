@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Button, Div, Header, Group, Avatar, SimpleCell, Switch, PanelHeaderButton, ModalPage,
   ModalRoot, ModalPageHeader } from '@vkontakte/vkui';
@@ -12,6 +13,7 @@ import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
 
 import bridge from '@vkontakte/vk-bridge';
 
+import {BACKEND} from '../Config.js';
 
 class More extends React.Component {
 	constructor(props) {
@@ -22,6 +24,7 @@ class More extends React.Component {
       imageHeight : 350,
       qrTooltip: false,
       activeModal: null,
+      userRating: null
     }
 
     this.modalBack = () => {
@@ -92,11 +95,47 @@ class More extends React.Component {
     
   }
 
+  setRating(r) {
+    if (this.state.userRating === null) {
+      this.setState({userRating: '...'})
+    } else {
+      let word = ''
+      let rating = r
+      if (rating < 20) {
+        if (rating <= 5){
+          word = 'очков'
+        } else if (rating === 2 || rating === 3 || rating === 4){
+          word = 'очка'
+        } else {
+          word = 'очко'
+        }
+      } else {
+        if (rating % 10 === 0){
+          word = 'очков'
+        } else if (rating % 10 === 1){
+          word = 'очко'
+        } else {
+          word = 'очка'
+        }
+      }
+      this.setState({userRating: rating + ' ' + word})
+    }
+  }
+
 	render() {
     let { id, themeUpdate, scheme, user } = this.props
     if (!user.first_name){
       bridge.send('VKWebAppGetUserInfo');
     }
+    if (this.state.userRating === null){
+      this.setState(
+        { userRating: '...' }
+      )
+      axios.get(BACKEND + '/api/getuserrating/' + user.id).then(response =>
+        this.setRating(response.data)
+      )
+    }
+
 
 		return (
             <Panel id={id} style={{ marginBottom : 5 }}>
@@ -111,7 +150,7 @@ class More extends React.Component {
                       before={<Avatar size={48}
                       src={user.photo_max_orig} />}
                       after={<Icon28StoryOutline fill="var(--purple-light)"/>}
-                      description="Очки гуччи"
+                      description={this.state.userRating}
                       onClick={this.createStory}
                     >
                       {user.first_name} {user.last_name}

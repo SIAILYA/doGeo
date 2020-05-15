@@ -13,6 +13,9 @@ import '@vkontakte/vkui/dist/vkui.css';
 import Start from "../src/panels/Start"
 import More from "../src/panels/More"
 import Learn from "../src/panels/Learn"
+import Game from "../src/panels/Game"
+
+import { BACKEND } from './Config';
 
 
 class App extends React.Component {
@@ -21,7 +24,7 @@ class App extends React.Component {
 
 		this.state = {
 			scheme: "bright_light",
-			mainview: 'emptyview',
+			mainview: 'gameview',
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
@@ -31,6 +34,7 @@ class App extends React.Component {
 			fetchedUser: '',
 			res: null,
 			response: null,
+			gameMode: null
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -52,7 +56,7 @@ class App extends React.Component {
 					if (!e.detail.data.keys[0].value || e.detail.data.keys[0].value === 'false'){
 						this.setState({mainview: 'learnview'})
 					} else {
-						this.setState({mainview: 'epicview'})
+						this.setState({mainview: 'gameview'})
 					}
 				}
 			}
@@ -60,9 +64,10 @@ class App extends React.Component {
 	}
 
 	apitest() {
-		console.log('api!!')
-		fetch('https://dogeo-backend.herokuapp.com/api/rating')
-			.then(res => res.json()).then(res => console.log(res[0]))
+		console.log(BACKEND + ' api!!')
+		axios.get(BACKEND + '/api/test').then(
+			response => console.log(response)
+		)
 	}
 
 	updateTheme() {
@@ -189,6 +194,7 @@ class App extends React.Component {
 								<Panel id="historypanel">
 									<PanelHeader>История</PanelHeader>
 									<Button onClick={() => {bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})}}>btn</Button>
+									<Button onClick={() => this.apitest()}>btn</Button>
 								</Panel>
 							</View>
 							<View id="more" activePanel="morepanel">
@@ -202,8 +208,11 @@ class App extends React.Component {
 					</Epic>
 					</Panel>
 				</View>
-				<View id='gameview' >
-					
+				<View id='gameview' activePanel='gamepanel'>
+					<Game
+						id='gamepanel'
+						mode={this.state.gameMode}
+						/>
 				</View>
 			</Root>
 				

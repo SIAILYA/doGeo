@@ -1,0 +1,1 @@
+export const BACKEND = "https://dogeo-backend.herokuapp.com"

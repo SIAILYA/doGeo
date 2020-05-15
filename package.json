@@ -41,8 +41,12 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "prop-types": "^15.7.2",
+    "radium": "^0.26.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-animations": "^1.0.0",
+    "react-dom": "^16.9.0",
+    "react-reveal": "^1.2.2",
+    "react-swipeable-cards": "^1.0.6"
   },
   "browserslist": {
     "production": [

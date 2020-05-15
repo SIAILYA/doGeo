@@ -33,6 +33,21 @@ class LGGame extends React.Component {
     }
   }
 
+  cardButton(side){
+    let answer = null
+    let answers = this.state.sessionAnswers
+    if (side === 'l' || side === 'L' || side === 'left'){
+      answer = 'Lower'
+    } else {
+      answer = 'Greater'
+    }
+    this.setState({
+      currentAnswer: answer,
+      slideIndex: this.state.slideIndex + 3,
+      currentQuestion: this.state.currentQuestion + 1,
+      sessionAnswers: answers})
+  }
+
   verifyAnswers(answers, right) {
     let verify = [];
     for (let i = 0; i < answers.length; i++){
@@ -104,6 +119,7 @@ class LGGame extends React.Component {
                             unit={question.units}
                             flag={question.flag}
                             country={question.country}
+                            cardButton={this.cardButton.bind(this)}
                             />
                         </Zoom>
                         }

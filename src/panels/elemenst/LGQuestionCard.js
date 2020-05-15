@@ -23,7 +23,7 @@ class LGQuestionCard extends React.Component {
   }
 
 	render() {
-    let { cardnumber, total, firstPart, number, unit, flag, country } = this.props
+    let { cardnumber, total, firstPart, number, unit, flag, country, cardButton } = this.props
 
 		return (
         <Group separator="hide">
@@ -46,16 +46,31 @@ class LGQuestionCard extends React.Component {
                   {unit}
                 </div>
                 <div style={{display: "flex", justifyContent: "space-between", marginTop: "13vh"}}>
-                <div style={{textAlign: "center"}}>
-                  <Button className="buttonPurple" style={{width: "7vh", height: "7vh", borderRadius: "50%"}}>{<Icon24BrowserBack />}</Button>
-                  <br/>
-                  <p style={{fontSize: "1.4vh"}}>На самом деле{<br/>}меньше</p>
-                </div>
-                <div style={{textAlign: "center"}}>
-                  <Button className="buttonPurple" style={{width: "7vh", height: "7vh", borderRadius: "50%"}}>{<Icon24BrowserForward />}</Button>
-                  <br/>
-                  <p style={{fontSize: "1.4vh"}}>На самом деле{<br/>}больше</p>
-                </div>
+                  <div style={{textAlign: "center"}}>
+                    <Button
+                      className="buttonPurple"
+                      style={{width: "7vh", height: "7vh", borderRadius: "50%"}}
+                      onClick={() => cardButton('left')}
+                      >
+                      {<Icon24BrowserBack />}
+                    </Button>
+                    <br/>
+                    <p style={{fontSize: "1.4vh"}}>На самом деле{<br/>}меньше</p>
+                  </div>
+                  <div style={{textAlign: "center", fontSize: "1.2vh"}}>
+                    <p className="purpleText" style={{fontSize: "2.5vh", marginBottom: -10}}>Свайпайте</p> {<br/>} или пользуйтесь кнопками!
+                  </div>
+                  <div style={{textAlign: "center"}}>
+                    <Button
+                        className="buttonPurple"
+                        style={{width: "7vh", height: "7vh", borderRadius: "50%"}}
+                        onClick={() => cardButton('right')}
+                        >
+                      {<Icon24BrowserForward />}
+                      </Button>
+                    <br/>
+                    <p style={{fontSize: "1.4vh"}}>На самом деле{<br/>}больше</p>
+                  </div>
                 </div>
               </div>
             </Card>

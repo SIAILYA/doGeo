@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Group, Card, CardGrid } from '@vkontakte/vkui';
-import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
+import Icon28HelpOutline from '@vkontakte/icons/dist/28/info_outline';
 
 
 class StartCard extends React.Component {
@@ -50,7 +50,7 @@ class StartCard extends React.Component {
                     size='l' 
                     style={{width: "15%", position: "relative", left: "2.5%"}}
                     onClick={() => startLearning(Gmode)}>
-                    <Icon28InfoOutline />
+                    <Icon28HelpOutline />
                     </Button>
                   </div>
                 }

@@ -57,11 +57,6 @@ class Start extends React.Component {
                         description='Факты, о которых с ходу (или не совсем) можно сказать "правда" или "ложь".|Ваша задача - докопаться до истины!'
                         disabled={true}
                         />
-                      <StartCard
-                        title="Время - деньги"
-                        description='На каждую карточку даётся по 5 секунд, не забудьте прочитать!|Единственное правило: "Не успел - проиграл"!'
-                        disabled={true}
-                      />
                     </Gallery>
                   </Group>
                   <div style={{textAlign: "center", paddingLeft: "5%", paddingRight: "5%", paddingBottom: "5%"}}>

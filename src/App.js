@@ -7,6 +7,7 @@ import Icon28Play from '@vkontakte/icons/dist/28/play';
 import Icon28HistoryBackwardOutline from '@vkontakte/icons/dist/28/history_backward_outline';
 import Icon28MenuOutline from '@vkontakte/icons/dist/28/menu_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
+import Icon28BrainOutline from '@vkontakte/icons/dist/28/brain_outline';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -214,6 +215,12 @@ class App extends React.Component {
 								</TabbarItem>
 								<TabbarItem
 									onClick={this.onStoryChange}
+									selected={this.state.activeStory === 'questions'}
+									data-story="questions"
+								><Icon28BrainOutline />
+								</TabbarItem>
+								<TabbarItem
+									onClick={this.onStoryChange}
 									selected={this.state.activeStory === 'rating'}
 									data-story="rating"
 								><Icon28GraphOutline />
@@ -244,6 +251,11 @@ class App extends React.Component {
 							<View id="rating" activePanel="ratingpanel">
 								<Panel id="ratingpanel">
 									<PanelHeader>Рейтинг</PanelHeader>
+								</Panel>
+							</View>
+							<View id="questions" activePanel="questionspanel">
+								<Panel id="questionspanel">
+									<PanelHeader>Вопросы</PanelHeader>
 								</Panel>
 							</View>
 							<View id="history" activePanel="historypanel">

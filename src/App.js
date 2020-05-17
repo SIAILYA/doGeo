@@ -13,6 +13,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 import Start from "../src/panels/Start"
 import More from "../src/panels/More"
 import Learn from "../src/panels/Learn"
+import LearnGame from "../src/panels/LearnGame"
 import LGGame from "./panels/LGGame"
 import LGGameEnd from "./panels/LGGameEnd"
 
@@ -29,6 +30,7 @@ class App extends React.Component {
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
+			learnPanel : 'learnpanel',
 			epiclock: false,
 			authToken : null,
 			history : ['st_play'],
@@ -36,9 +38,10 @@ class App extends React.Component {
 			res: null,
 			response: null,
 			gameMode: null,
-			lastGame: null,
+			lastGameChecked: null,
 			gameview: 'lggamepanel',
-			questions: null
+			questions: null,
+			learnLG: null,
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -56,11 +59,20 @@ class App extends React.Component {
 				this.setState({ fetchedUser: e.detail.data });
 			} else
 			if (e.detail.type === 'VKWebAppStorageGetResult') {
-				if (e.detail.data.keys[0].key === 'endLearning') {
-					if (!e.detail.data.keys[0].value || e.detail.data.keys[0].value === 'false'){
-						this.setState({mainview: 'learnview'})
-					} else {
-						this.setState({mainview: 'epicview'})
+				for (let i = 0; i < e.detail.data.keys.length; i++){
+					if (e.detail.data.keys[i].key === 'endLearning') {
+						if (!e.detail.data.keys[i].value || e.detail.data.keys[i].value === 'false'){
+							this.setState({mainview: 'learnview'})
+						} else {
+							this.setState({mainview: 'epicview'})
+						}
+					}
+					if (e.detail.data.keys[i].key === 'endLGLearning') {
+						if (e.detail.data.keys[i].value === false || e.detail.data.keys[i].value === 'false'){
+							this.setState({learnLG: false})
+						} else {
+							this.setState({learnLG: true})
+						}
 					}
 				}
 			}
@@ -120,26 +132,40 @@ class App extends React.Component {
 		});
 	}
 
+	
 	onStoryChange (e) {
 		const history = [...this.state.history];
 		history.push('st_' + e.currentTarget.dataset.story);
 		this.setState({ activeStory: e.currentTarget.dataset.story, history: history })
 		window.history.pushState({view: e.currentTarget.dataset.story}, e.currentTarget.dataset.story);
-		bridge.send('VKWebAppGetUserInfo');
 	}
 
-	startGame(mode){
-		if (mode === 'LG'){
-			this.setState({ mainview: 'emptyview' })
+	startGame(gameMode){
+		if (gameMode === 'LG'){
+			this.setState({ mainview: 'emptyview', gameMode: 'LG' })	
 			axios.get(BACKEND + '/api/getquestions/7').then(res => {
 				this.setState({questions: res.data})
 				this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
 			})
 		}
 	}
+
+	endGame(gameMode, verified) {
+		if (gameMode === 'LG'){
+			this.setState({gameview: 'lggameendpanel', lastGameChecked: verified})
+		}
+	}
 	
-	endLGGame(verified) {
-		this.setState({gameview: 'lggameendpanel', lastGame: verified})
+	startLearning(gameMode) {
+		if (gameMode === 'LG'){
+			this.setState({ gameMode: 'LG', mainview: 'learnview', learnPanel: 'learngame' })	
+		}
+	}
+	
+	endGameLearning(gameMode) {
+		if (gameMode === 'LG'){
+			this.setState({ learnLG: true, mainview: 'epicview' })	
+		}
 	}
 
 	menuReturn(){
@@ -158,11 +184,17 @@ class App extends React.Component {
 						<PanelSpinner />
 					</Panel>
 				</View>
-				<View id="learnview" activePanel="learnpanel">
+				<View id="learnview" activePanel={this.state.learnPanel}>
 					<Learn
 						id="learnpanel"
 						scheme={this.state.scheme}
 						endLearning={() => this.endLearning()}
+					/>
+					<LearnGame 
+						id="learngame"
+						gameMode={this.state.gameMode}
+						scheme={this.state.scheme}
+						endLearning={this.endGameLearning.bind(this)}
 					/>
 				</View>
 				<View id="epicview" activePanel="epicpanel"
@@ -205,6 +237,8 @@ class App extends React.Component {
 									id="playpanel"
 									scheme={this.state.scheme}
 									startGame={this.startGame.bind(this)}
+									startLearning={this.startLearning.bind(this)}
+									learnLG={this.state.learnLG}
 									/>
 							</View>
 							<View id="rating" activePanel="ratingpanel">
@@ -215,7 +249,10 @@ class App extends React.Component {
 							<View id="history" activePanel="historypanel">
 								<Panel id="historypanel">
 									<PanelHeader>История</PanelHeader>
-									<Button onClick={() => {bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})}}>btn</Button>
+									<Button onClick={() => {
+										bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})
+										bridge.send("VKWebAppStorageSet", {"key": "endLGLearning", "value": 'false'})
+										}}>btn</Button>
 									<Button onClick={() => this.apitest()}>btn</Button>
 								</Panel>
 							</View>
@@ -234,12 +271,12 @@ class App extends React.Component {
 					<LGGame
 						id='lggamepanel'
 						lastGame={this.state.lastGame}
-						endLGGame={this.endLGGame.bind(this)}
+						endGame={this.endGame.bind(this)}
 						questions={this.state.questions}
 						/>
 					<LGGameEnd
 						id='lggameendpanel'
-						lastGame={this.state.lastGame}
+						lastGame={this.state.lastGameChecked}
 						menuReturn={this.menuReturn.bind(this)}
 						/>
 				</View>

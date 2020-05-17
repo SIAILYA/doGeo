@@ -78,14 +78,15 @@ class LGGame extends React.Component {
   }
 
   render () {
-    let { id, endLGGame, questions } = this.props;
+    let { id, endGame, questions } = this.props;
     
     if (this.state.questions.length === 0){
       this.generateQuestionsAnswers(questions)
     }
 
     if (this.state.currentQuestion === questions.length) {
-      endLGGame(this.verifyAnswers(this.state.sessionAnswers, this.state.rightAnswers));
+      console.log('call')
+      endGame('LG', this.verifyAnswers(this.state.sessionAnswers, this.state.rightAnswers));
       this.setState({currentQuestion: null})
     }
 

@@ -16,7 +16,7 @@ class Start extends React.Component {
     }
     
 	render() {
-        let { id, scheme, startGame } = this.props
+        let { id, scheme, startGame, startLearning, learnLG } = this.props
 
 		return (
             <Panel id={id} style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
@@ -46,9 +46,11 @@ class Start extends React.Component {
                     > 
                       <StartCard
                         title="Больше - меньше"
-                        description="На каждой карточке вопрос, в котором явно фигурирует некоторое число.|Догадайтесь, в какую сторону мы его изменили"
+                        description="На каждой карточке вопрос, в котором фигурирует некоторое число.|Догадайтесь, в какую сторону мы его изменили"
                         Gmode='LG'
                         startGame={startGame}
+                        startLearning={startLearning}
+                        learnLG={learnLG ? true : false}
                       />
                       <StartCard
                         title="Верю - не верю"

@@ -1,11 +1,12 @@
 import React from 'react';
+import bridge from '@vkontakte/vk-bridge';
 import PropTypes from 'prop-types';
 import { Panel, Button, Div, Gallery, Group } from '@vkontakte/vkui';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 
-import LearnCard from '../panels/elemenst/LearnCard'
+import LearnCard from './elemenst/LearnCard'
 
-class Learn extends React.Component {
+class LearnGame extends React.Component {
 	constructor(props) {
         super(props);
         
@@ -17,33 +18,45 @@ class Learn extends React.Component {
   
   nextCard() {
     if (this.state.slideIndex === 3){
-      this.props.endLearning()
+      bridge.send("VKWebAppStorageSet", {"key": "endLGLearning", "value": "true"})
+      bridge.send("VKWebAppStorageGet", {"keys": ['endLGLearning']})
+      this.props.endLearning(this.props.gameMode)
     } else {
       this.setState({slideIndex: this.state.slideIndex + 1})
     }
   }
 
 	render() {
-        let { id, scheme } = this.props
+        let { id, scheme, gameMode } = this.props
 
 		return (
             <Panel id={id} style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
             {
               <div style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
                 <Group>
-                  <Gallery
-                    slideWidth="100%"
-                    align="center"
-                    style={{ height: "85vh" }}
-                    bullets={(scheme === "bright_light" || scheme === "client_light") ? 'dark': 'light'}
-                    slideIndex={this.state.slideIndex}
-                    onChange={slideIndex => this.setState({slideIndex})}
-                  >
-                    <LearnCard id={1} />
-                    <LearnCard id={2} />
-                    <LearnCard id={3} />
-                    <LearnCard id={4} />
-                  </Gallery>
+                  {gameMode === 'LG' &&
+                    <Gallery
+                      slideWidth="100%"
+                      align="center"
+                      style={{ height: "85vh" }}
+                      bullets={(scheme === "bright_light" || scheme === "client_light") ? 'dark': 'light'}
+                      slideIndex={this.state.slideIndex}
+                      onChange={slideIndex => this.setState({slideIndex})}
+                    >
+                          <LearnCard
+                            id={5}
+                            />
+                          <LearnCard
+                            id={6}
+                            />
+                          <LearnCard
+                            id={7}
+                            />
+                          <LearnCard
+                            id={8}
+                            />
+                    </Gallery>
+                  }
                   <Div style={{marginTop: "2vh", paddingLeft: "2vh", paddingRight: "2vh"}}>
                     <Button
                       className="buttonPurple"
@@ -62,8 +75,8 @@ class Learn extends React.Component {
 	}
 }
 
-Learn.propTypes = {
+LearnGame.propTypes = {
     id: PropTypes.string.isRequired,
 };
 
-export default Learn;
+export default LearnGame;

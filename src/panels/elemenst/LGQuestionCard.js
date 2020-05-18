@@ -42,10 +42,10 @@ class LGQuestionCard extends React.Component {
                 <div style={{textAlign: "center", fontSize: "7vh", fontWeight: 500, color: "var(--purple-dark)", marginTop: "5vh"}}>
                   {number}
                 </div>
-                <div style={{textAlign: "center", fontSize: "2vh", marginTop: "1vh"}}>
+                <div style={{textAlign: "center", fontSize: "2vh", marginTop: "1vh", marginBottom: '4vh'}}>
                   {unit}
                 </div>
-                <div style={{display: "flex", justifyContent: "space-between", marginTop: "13vh"}}>
+                <div style={{display: "flex", justifyContent: "space-between", verticalAlign: "bottom"}}>
                   <div style={{textAlign: "center"}}>
                     <Button
                       className="buttonPurple"

@@ -1,0 +1,20 @@
+<svg width="234" height="172.99999999999997" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with SVG Editor - http://github.com/mzalive/SVG Editor/ -->
+
+ <g>
+  <title>background</title>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#f5226f" rx="3" id="svg_40" height="4.38095" width="205" y="33.761928" x="13.381015" stroke-width="2.5" fill="#f5226f"/>
+  <rect stroke="#f5226f" rx="3" id="svg_41" height="4.38095" width="205" y="15.904806" x="13.381015" stroke-width="2.5" fill="#f5226f"/>
+  <rect stroke="#f5226f" rx="3" id="svg_42" height="4.38095" width="205" y="127.809441" x="13.381015" stroke-width="2.5" fill="#f5226f"/>
+  <rect stroke="#f5226f" rx="3" id="svg_39" height="4.38095" width="205" y="146.261801" x="13.381015" stroke-width="2.5" fill="#f5226f"/>
+  <rect stroke="#f5226f" rx="3" id="svg_37" height="4.38095" width="205" y="109.357083" x="13.381015" stroke-width="2.5" fill="#f5226f"/>
+  <text stroke="#f5226f" transform="matrix(2.099900245666504,0,0,2.099900245666504,-90.01996073126793,-92.06508775055408) " font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Junction, sans-serif" font-size="24" id="svg_38" y="86.627241" x="79.088851" stroke-width="0" fill="#f5226f">123</text>
+  <rect stroke="#f5226f" rx="8" fill-opacity="0" id="svg_43" height="157.142679" width="220.833071" y="6.404896" x="5.464473" stroke-width="4.5" fill="#f5226f"/>
+ </g>
+</svg>

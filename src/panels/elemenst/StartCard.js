@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Group, Card, CardGrid } from '@vkontakte/vkui';
+import Icon28HelpOutline from '@vkontakte/icons/dist/28/info_outline';
 
 
 class StartCard extends React.Component {
@@ -14,7 +15,7 @@ class StartCard extends React.Component {
     }
     
 	render() {
-    let {title, description, disabled, startGame, Gmode} = this.props
+    let {title, description, disabled, startGame, startLearning, Gmode, learnLG} = this.props
 
 		return (
         <Group separator="hide">
@@ -34,13 +35,24 @@ class StartCard extends React.Component {
               <div>
                 {
                   !disabled &&
-                  <Button
-                  className="buttonPurple"
-                  stretched size='l' 
-                  style={{width: "80%", position: "relative", left: "10%"}}
-                  onClick={() => startGame(Gmode)}>
-                    Играть
-                  </Button>
+                  <div style={{display: 'flex', flexDirection: 'row', paddingLeft: "10%", paddingRight: "10%"}}>
+                    <Button
+                    className="buttonPurple"
+                    stretched size='l' 
+                    style={{width: "70%", position: "relative", right: "2.5%"}}
+                    onClick={learnLG ? () => startGame(Gmode) : () => startLearning(Gmode)}>
+                      {
+                        learnLG ? "Играть" : "Как играть?"
+                      }
+                    </Button>
+                    <Button
+                    className="buttonPurple"
+                    size='l' 
+                    style={{width: "15%", position: "relative", left: "2.5%"}}
+                    onClick={() => startLearning(Gmode)}>
+                    <Icon28HelpOutline />
+                    </Button>
+                  </div>
                 }
                 {
                   disabled &&

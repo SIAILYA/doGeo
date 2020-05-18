@@ -5,6 +5,9 @@ import gamepad from "../../img/gamepad.svg"
 import question from "../../img/question.svg"
 import earth from "../../img/earth.svg"
 import share from "../../img/share.svg"
+import num from "../../img/num.svg"
+import swipe from "../../img/swipe.svg"
+import arrows from "../../img/arrows.svg"
 
 class LearnCard extends React.Component {
 	constructor(props) {
@@ -70,6 +73,62 @@ class LearnCard extends React.Component {
               </div>
               <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
                 <p className="dogeo gradient-text" style={{fontSize: "6vw", marginBottom: 0, marginTop: 30, fontWeight: 600}}>Погрузиться в мир географии?</p>
+              </div>
+              <div className="icon" style={{marginTop: "7vh"}}>
+                <img className="iconimg" src={earth} alt="earth"/>
+              </div>
+            </div>
+          }
+          { id === 5 &&
+            <div style={{textAlign: "center", fontFamily: "Montserrat", marginTop: "8vh"}}>
+              <div>
+                <p className="hello gradient-text" style={{fontSize: "10vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Больше - меньше</p>
+              </div>
+              <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>В каждом вопросе выделено число,</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>которое на самом деле больше или меньше</p>
+              </div>
+              <div className="icon" style={{marginTop: "7vh"}}>
+                <img className="iconimg" src={num} alt="number"/>
+              </div>
+            </div>
+          }
+          { id === 6 &&
+            <div style={{textAlign: "center", fontFamily: "Montserrat", marginTop: "8vh"}}>
+              <div>
+                <p className="hello gradient-text" style={{fontSize: "10vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Больше - меньше</p>
+              </div>
+              <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Если выделенное число</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>меньше действительного - свайпните карточку влево. И наоборот</p>
+              </div>
+              <div className="icon" style={{marginTop: "7vh"}}>
+                <img className="iconimg" src={arrows} alt="arrows"/>
+              </div>
+            </div>
+          }
+          { id === 7 &&
+            <div style={{textAlign: "center", fontFamily: "Montserrat", marginTop: "8vh"}}>
+              <div>
+                <p className="hello gradient-text" style={{fontSize: "10vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Больше - меньше</p>
+              </div>
+              <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Например, карточку с утверждением </p>
+                <p style={{marginBottom: 0, marginTop: 10}}>"В мире 1 континент" нужно смахнуть вправо</p>
+              </div>
+              <div className="icon" style={{marginTop: "7vh"}}>
+                <img className="iconimg" src={swipe} alt="swipe"/>
+              </div>
+            </div>
+          }
+          { id === 8 &&
+            <div style={{textAlign: "center", fontFamily: "Montserrat", marginTop: "8vh"}}>
+              <div>
+                <p className="hello gradient-text" style={{fontSize: "10vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Больше - меньше</p>
+              </div>
+              <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Ведь в мире на самом деле</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>целых 6 континентов! Все просто! Начинаем?</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
                 <img className="iconimg" src={earth} alt="earth"/>

@@ -22,6 +22,7 @@ class LGGameEnd extends React.Component {
     }
   
   countRights(answers) {
+    console.log(answers)
     let rights = 0;
     for (let i = 0; i < answers.length; i++){
       if (answers[i] === 1){

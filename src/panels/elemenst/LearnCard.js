@@ -5,9 +5,10 @@ import gamepad from "../../img/gamepad.svg"
 import question from "../../img/question.svg"
 import earth from "../../img/earth.svg"
 import share from "../../img/share.svg"
-import num from "../../img/num.svg"
 import swipe from "../../img/swipe.svg"
-import arrows from "../../img/arrows.svg"
+import lg from "../../img/lg.svg"
+import num from "../../img/num.svg"
+import map from "../../img/map.svg"
 
 class LearnCard extends React.Component {
 	constructor(props) {
@@ -103,7 +104,7 @@ class LearnCard extends React.Component {
                 <p style={{marginBottom: 0, marginTop: 10}}>меньше действительного - свайпните карточку влево. И наоборот</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
-                <img className="iconimg" src={arrows} alt="arrows"/>
+                <img className="iconimg" src={lg} alt="lg"/>
               </div>
             </div>
           }
@@ -131,7 +132,7 @@ class LearnCard extends React.Component {
                 <p style={{marginBottom: 0, marginTop: 10}}>целых 6 континентов! Все просто! Начинаем?</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
-                <img className="iconimg" src={earth} alt="earth"/>
+                <img className="iconimg" src={map} alt="map"/>
               </div>
             </div>
           }

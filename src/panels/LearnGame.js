@@ -64,7 +64,7 @@ class LearnGame extends React.Component {
                       style={{position: "relative", bottom: '10', width: "70%", height: "5vh", left: "15%", fontFamily: "Montserrat", fontSize: "5vh"}}
                       onClick={() => this.nextCard()}
                     >
-                      {this.state.slideIndex === 3 ? "Начать!": "Вперёд!"}
+                      {this.state.slideIndex === 3 ? "Понятно!": "Дальше!"}
                     </Button>
                   </Div>
                 </Group>

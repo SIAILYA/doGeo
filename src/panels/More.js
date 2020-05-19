@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Button, Div, Header, Group, SimpleCell, Switch, PanelHeaderButton, ModalPage,
   ModalRoot, ModalPageHeader } from '@vkontakte/vkui';
@@ -11,10 +10,8 @@ import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
 import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
 import Icon28DeleteOutlineAndroid from '@vkontakte/icons/dist/28/delete_outline_android';
 import Icon28PrivacyOutline from '@vkontakte/icons/dist/28/privacy_outline';
-import Icon28CheckSquareOutline from '@vkontakte/icons/dist/28/check_square_outline';
 
 import bridge from '@vkontakte/vk-bridge';
-import {BACKEND} from '../Config'
 
 class More extends React.Component {
 	constructor(props) {
@@ -190,15 +187,6 @@ class More extends React.Component {
                               }}
                     >
                       Сбросить обучения
-                    </SimpleCell>
-                    <SimpleCell
-                      before={<Icon28CheckSquareOutline fill="var(--purple-light)"/>}
-                      description="Ответ ищите в консоли :)"
-                      onClick={() => {console.log('Проверяем API, resource: '+ BACKEND)
-                              axios.get(BACKEND + '/api/test')
-                              .then(response => console.log(response))}}
-                    >
-                      Тест доступа к API
                     </SimpleCell>
                   </Group>
                   <ModalRoot

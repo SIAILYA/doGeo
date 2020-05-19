@@ -9,6 +9,7 @@ import Icon28MenuOutline from '@vkontakte/icons/dist/28/menu_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
 import Icon28BrainOutline from '@vkontakte/icons/dist/28/brain_outline';
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
+import Icon56RecentOutline from '@vkontakte/icons/dist/56/recent_outline';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -23,6 +24,7 @@ import Questions from "./panels/Questions"
 import Rating from "./panels/Rating"
 
 import { BACKEND } from './Config';
+import LGGameStart from './panels/LGGameStart';
 
 
 class App extends React.Component {
@@ -32,12 +34,12 @@ class App extends React.Component {
 		this.state = {
 			serverError: null,
 			scheme: "bright_light",
-			mainview: 'emptyview',
+			mainview: 'epicview',
 			activePanel : 'play',
 			activeFeed: 'play',
 			activeStory: 'play',
 			learnPanel : 'learnpanel',
-			epiclock: false,
+			epiclock: true,
 			authToken : null,
 			history : ['st_play'],
 			fetchedUser: '',
@@ -45,7 +47,7 @@ class App extends React.Component {
 			response: null,
 			gameMode: null,
 			lastGameChecked: [],
-			gamepanel: 'lggamepanel',
+			gamepanel: 'lggamestartpanel',
 			questions: [],
 			generatedQuestions: [],
 			learnLG: null,
@@ -54,6 +56,12 @@ class App extends React.Component {
 			questionsPanel: 'questionspanel',
 			loadingRating: true,
 			ratingUsers: [],
+			sendRating: false,
+			lockGameEnd: false,
+			gameInfo: null,
+			allowRating: null,
+			ratingGame: false,
+			beforeRating: null,
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
@@ -78,7 +86,7 @@ class App extends React.Component {
 						if (!e.detail.data.keys[i].value || e.detail.data.keys[i].value === 'false'){
 							this.setState({mainview: 'learnview'})
 						} else {
-							this.setState({mainview: 'epicview'})
+							this.setState({mainview: 'epicview', epiclock: false})
 						}
 					}
 					if (e.detail.data.keys[i].key === 'endLGLearning') {
@@ -148,7 +156,7 @@ class App extends React.Component {
 		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
 		this.setState({mainview: 'epicview'})
 		this.setState({epiclock: true})
-		axios.post('https://dogeo-backend.herokuapp.com/api/newuser', {user})
+		axios.post(BACKEND + '/api/newuser', {user})
 		.then(res => {
 			this.setState({epiclock: false})
 		})
@@ -163,15 +171,28 @@ class App extends React.Component {
 		window.history.pushState({view: e.currentTarget.dataset.story}, e.currentTarget.dataset.story);
 	}
 
-	startGame(gameMode){
+	startGame(gameMode, rating){
+		if (rating === true){
+			this.setState({ratingGame: true})
+		} else {
+			this.setState({ratingGame: false})
+		}
+
 		if (gameMode === 'LG'){
-			this.setState({ mainview: 'emptyview', gameMode: 'LG' })	
+			this.setState({ gameMode: 'LG', ratingGame: rating })	
 			axios.get(BACKEND + '/api/getquestions/7')
 			.then(res => {
 				this.setState({questions: res.data})
-				this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
+				this.setState({mainview: 'gameview', gamepanel: 'lggamepanel'})
 			})
 			.catch(err => {this.setState({serverError: true})})
+		}
+	}
+
+	prepareGame(gameMode){
+		this.getGameInfo()
+		if (gameMode === 'LG'){
+			this.setState({ gameMode: 'LG', mainview: 'gameview', gamepanel: 'lggamestartpanel' })
 		}
 	}
 
@@ -199,7 +220,7 @@ class App extends React.Component {
 	}
 
 	menuReturn(){
-		this.setState({mainview: 'epicview', gamepanel: 'lggamepanel'})
+		this.setState({ mainview: 'epicview', history : ['st_play'] })
 	}
 
 	checkServer(){
@@ -251,8 +272,43 @@ class App extends React.Component {
 			this.setState({ratingUsers: res.data, loadingRating: false})
 		})
 	}
+
+	getGameInfo(){
+		axios.get(BACKEND + '/api/getgamehistory/' + this.state.fetchedUser.id)
+		.then(res => {
+			this.setState({gameInfo: res.data})
+			if (res.data.gametimes.length === 5){
+				let now = new Date()
+				this.setState({allowRating: false, beforeRating: Math.abs(new Date(new Date(res.data.gametimes[0]).getTime() + 24*60*60*1000) - now) / (1000 * 60)})
+			} else {
+				this.setState({allowRating: 5 - res.data.gametimes.length})
+			}
+		})
+	}
+
 	
+	sendResult(ratingShift, user, lastGame, questions){
+		if (this.state.ratingGame){
+			this.setState({sendRating: true})
+			let now = new Date();
+			let data = {
+			  "user_id": user.id,
+			  "rating_shift": ratingShift,
+			  "game_data": {'date': now, 'answers': lastGame, 'questions': questions}
+			}
+			this.setState({lockGameEnd: true})
+			axios.post(BACKEND + '/api/increacerating', data)
+			.then(() => {
+			  this.setState({lockGameEnd: false})
+			})
+		}
+	  }
+
 	render() {
+		if (this.state.gameInfo === null && this.state.fetchedUser.id){
+			this.getGameInfo()
+		}
+
 		return (
 			<ConfigProvider
 			isWebView={true}
@@ -262,24 +318,6 @@ class App extends React.Component {
 				this.state.serverError === null || this.state.serverError === false
 				? 
 				<Root activeView={this.state.mainview}>
-				<View id="emptyview" activePanel="spinnerpanel">
-					<Panel id='spinnerpanel'>
-						<PanelSpinner />
-					</Panel>
-				</View>
-				<View id="learnview" activePanel={this.state.learnPanel}>
-					<Learn
-						id="learnpanel"
-						scheme={this.state.scheme}
-						endLearning={() => this.endLearning()}
-					/>
-					<LearnGame 
-						id="learngame"
-						gameMode={this.state.gameMode}
-						scheme={this.state.scheme}
-						endLearning={this.endGameLearning.bind(this)}
-					/>
-				</View>
 				<View id="epicview" activePanel="epicpanel"
 					onSwipeBack={this.goBack}
           			history={this.state.history}
@@ -325,7 +363,7 @@ class App extends React.Component {
 								<Start
 									id="playpanel"
 									scheme={this.state.scheme}
-									startGame={this.startGame.bind(this)}
+									startGame={this.prepareGame.bind(this)}
 									startLearning={this.startLearning.bind(this)}
 									learnLG={this.state.learnLG}
 									history={this.state.history}
@@ -355,6 +393,7 @@ class App extends React.Component {
 							<View id="history" activePanel="historypanel">
 								<Panel id="historypanel">
 									<PanelHeader>История</PanelHeader>
+									<Placeholder icon={<Icon56RecentOutline />} header="Раздел уже в работе!"></Placeholder>
 								</Panel>
 							</View>
 							<View id="more" activePanel="morepanel">
@@ -368,7 +407,33 @@ class App extends React.Component {
 					</Epic>
 					</Panel>
 				</View>
+				<View id="emptyview" activePanel="spinnerpanel">
+					<Panel id='spinnerpanel'>
+						<PanelSpinner />
+					</Panel>
+				</View>
+				<View id="learnview" activePanel={this.state.learnPanel}>
+					<Learn
+						id="learnpanel"
+						scheme={this.state.scheme}
+						endLearning={() => this.endLearning()}
+					/>
+					<LearnGame 
+						id="learngame"
+						gameMode={this.state.gameMode}
+						scheme={this.state.scheme}
+						endLearning={this.endGameLearning.bind(this)}
+					/>
+				</View>
 				<View id='gameview' activePanel={this.state.gamepanel}>
+					<LGGameStart
+						id='lggamestartpanel'
+						gameInfo={this.state.gameInfo}
+						allowRating={this.state.allowRating}
+						beforeRating={this.state.beforeRating}
+						history={this.state.history}
+						startGame={this.startGame.bind(this)}
+					/>
 					<LGGame
 						id='lggamepanel'
 						lastGame={this.state.lastGame}
@@ -376,7 +441,7 @@ class App extends React.Component {
 						history={this.state.history}
 						questions={this.state.questions}
 						generatedQuestions={this.state.generatedQuestions}
-						/>
+					/>
 					<LGGameEnd
 						id='lggameendpanel'
 						lastGame={this.state.lastGameChecked}
@@ -386,7 +451,10 @@ class App extends React.Component {
 						generatedQuestions={this.state.generatedQuestions}
 						menuReturn={this.menuReturn.bind(this)}
 						viewGameStat={this.viewGameStat.bind(this)}
-						/>
+						sendResult={this.sendResult.bind(this)}
+						lockGameEnd={this.state.lockGameEnd}
+						sendRating={this.state.sendRating}
+					/>
 					<GameStat
 						id='lastgamestat'
 						lastGame={this.state.lastGameChecked}

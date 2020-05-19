@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import bridge from '@vkontakte/vk-bridge';
 // import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Button, PanelSpinner } from '@vkontakte/vkui';
@@ -7,7 +6,7 @@ import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
 
-import {PHRASES, BACKEND} from '../Config'
+import {PHRASES} from '../Config'
 import {scoreDeclination, countRights, ratingShift} from '../Utils'
 
 class LGGameEnd extends React.Component {
@@ -17,25 +16,9 @@ class LGGameEnd extends React.Component {
         this.state = {
             slideIndex: 0,
             imageHeight : 350,
-            sendRating: false,
-            lockGameEnd: false,
-
         }
     }
   
-  sendResult(ratingShift, user, lastGame, questions){
-    let now = new Date();
-    let data = {
-      "user_id": user.id,
-      "rating_shift": ratingShift,
-      "game_data": {'date': now, 'answers': lastGame, 'questions': questions}
-    }
-    this.setState({lockGameEnd: true})
-    axios.post(BACKEND + '/api/increacerating', data)
-    .then(() => {
-      this.setState({lockGameEnd: false})
-    })
-  }
 
   handler(e) {
     this.props.history.push('pa_' + e.currentTarget.dataset.panel);
@@ -47,22 +30,21 @@ class LGGameEnd extends React.Component {
   }
 
 	render() {
-    let {id, lastGame, questions, menuReturn, user} = this.props
+    let {id, lastGame, questions, menuReturn, user, sendRating, lockGameEnd, sendResult} = this.props
 
 
     if (!user.first_name){
       bridge.send('VKWebAppGetUserInfo');
     }
 
-    if (!this.state.sendRating){
-      this.sendResult(ratingShift(lastGame), user, lastGame, questions)
-      this.setState({sendRating: true})
+    if (!sendRating){
+      sendResult(ratingShift(lastGame), user, lastGame, questions)
     }
 
 		return (
       <Panel id={id}>
         <PanelHeader>Больше - меньше</PanelHeader>
-        {this.state.lockGameEnd 
+        {lockGameEnd 
         ? <PanelSpinner /> 
         :<div>
           <div style={{fontSize: '5vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '3vh'}}>

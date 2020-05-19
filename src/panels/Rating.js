@@ -5,7 +5,7 @@ import { View, Panel, PanelHeader, SimpleCell, ScreenSpinner, List, Avatar, Card
 import {scoreDeclination} from '../Utils'
 
 
-class Questions extends React.Component {
+class Rating extends React.Component {
 	constructor(props) {
         super(props);
         
@@ -13,6 +13,7 @@ class Questions extends React.Component {
 
         }
 
+        this.props.loadRating()
     }
 
 
@@ -48,7 +49,7 @@ class Questions extends React.Component {
                                             {scoreDeclination(ratingUsers[0].rating)} 
                                         </div>
                                         <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                            35 игр | 125 верных ответов 
+                                            Игр: {ratingUsers[0].gamecount} | Верных ответов: {ratingUsers[0].right_answers}
                                         </div>
                                     </div>
                                 </Card>
@@ -120,8 +121,8 @@ class Questions extends React.Component {
 	}
 }
 
-Questions.propTypes = {
+Rating.propTypes = {
     id: PropTypes.string.isRequired,
 };
 
-export default Questions;
+export default Rating;

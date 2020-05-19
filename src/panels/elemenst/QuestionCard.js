@@ -1,8 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Button, Group, Card, CardGrid, SimpleCell, Avatar, Header, HorizontalScroll } from '@vkontakte/vkui';
-import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
-import Icon24BrowserForward from '@vkontakte/icons/dist/24/browser_forward';
 import Icon28LinkOutline from '@vkontakte/icons/dist/28/link_outline';
 import Icon28UserOutline from '@vkontakte/icons/dist/28/user_outline';
 

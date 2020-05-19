@@ -58,7 +58,7 @@ class App extends React.Component {
 
 		this.onStoryChange = this.onStoryChange.bind(this);
 
-		setInterval(() => this.checkServer(), 5000)
+		setInterval(() => this.checkServer(), 15000)
 	}
 
 	componentDidMount() {	
@@ -91,13 +91,6 @@ class App extends React.Component {
 				}
 			}
 		})
-	}
-
-	apitest() {
-		console.log(BACKEND + ' api!!')
-		axios.get(BACKEND + '/api/test')
-		.then(response => console.log(response))
-		.catch(err => {this.setState({serverError: true})})
 	}
 
 	updateTheme() {
@@ -176,7 +169,6 @@ class App extends React.Component {
 			axios.get(BACKEND + '/api/getquestions/7')
 			.then(res => {
 				this.setState({questions: res.data})
-				console.log(res.data)
 				this.setState({mainview: 'gameview', gameview: 'lggamepanel'})
 			})
 			.catch(err => {this.setState({serverError: true})})
@@ -257,7 +249,6 @@ class App extends React.Component {
 		axios.get(BACKEND + '/api/getglobalrating/' + this.state.fetchedUser.id)
 		.then(res => {
 			this.setState({ratingUsers: res.data, loadingRating: false})
-			console.log(res.data)
 		})
 	}
 	

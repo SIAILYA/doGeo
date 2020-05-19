@@ -8,7 +8,6 @@ import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
 import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
 import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
-import Icon28CopyOutline from '@vkontakte/icons/dist/28/copy_outline';
 import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
 import Icon28DeleteOutlineAndroid from '@vkontakte/icons/dist/28/delete_outline_android';
 import Icon28PrivacyOutline from '@vkontakte/icons/dist/28/privacy_outline';

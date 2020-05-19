@@ -1,28 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
-import { View, Panel, PanelHeader, Button, Div, Header, Group, SimpleCell, Switch, PanelHeaderButton, ModalPage,
-  ModalRoot, ModalPageHeader, ScreenSpinner, Placeholder, ModalCard, List, Avatar, Card, CardGrid, Separator, FixedLayout } from '@vkontakte/vkui';
-import Icon24Back from '@vkontakte/icons/dist/24/back'
-import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
-import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
-import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
-import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
-import Icon28CopyOutline from '@vkontakte/icons/dist/28/copy_outline';
-import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
-import Icon28DeleteOutlineAndroid from '@vkontakte/icons/dist/28/delete_outline_android';
-import Icon28PrivacyOutline from '@vkontakte/icons/dist/28/privacy_outline';
-import Icon28CheckSquareOutline from '@vkontakte/icons/dist/28/check_square_outline';
-import Icon28SearchOutline from '@vkontakte/icons/dist/28/search_outline';
-import Icon28MoreHorizontal from '@vkontakte/icons/dist/28/more_horizontal';
-import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
-import Icon28UserOutline from '@vkontakte/icons/dist/28/user_outline';
-import Icon56LinkCircleOutline from '@vkontakte/icons/dist/56/link_circle_outline';
-import Icon56RecentOutline from '@vkontakte/icons/dist/56/recent_outline';
+import { View, Panel, PanelHeader, SimpleCell, ScreenSpinner, List, Avatar, Card, CardGrid, Separator, FixedLayout } from '@vkontakte/vkui';
 
-import bridge from '@vkontakte/vk-bridge';
-import {BACKEND} from '../Config'
-import QuestionCard from '../panels/elemenst/QuestionCard'
 import {scoreDeclination} from '../Utils'
 
 
@@ -105,7 +84,7 @@ class Questions extends React.Component {
                     <Separator></Separator>
                     <List>
                         {   
-                            ratingUsers.slice(3).map((user, index, array) => {
+                            ratingUsers.slice(3).map((user, index) => {
                                 if (user.id === fetchedUser.id && ratingUsers[ratingUsers.length - 1] === true){
                                     return null
                                 }

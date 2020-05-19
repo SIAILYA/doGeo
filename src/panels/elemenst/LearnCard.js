@@ -9,6 +9,7 @@ import swipe from "../../img/swipe.svg"
 import lg from "../../img/lg.svg"
 import num from "../../img/num.svg"
 import map from "../../img/map.svg"
+import score from "../../img/score.svg"
 
 class LearnCard extends React.Component {
 	constructor(props) {
@@ -101,7 +102,7 @@ class LearnCard extends React.Component {
               </div>
               <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
                 <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Если выделенное число</p>
-                <p style={{marginBottom: 0, marginTop: 10}}>меньше действительного - свайпните карточку влево. И наоборот</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>меньше действительного - свайпните карточку вправо. И наоборот: если число больше - свайп влево!</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
                 <img className="iconimg" src={lg} alt="lg"/>
@@ -129,10 +130,24 @@ class LearnCard extends React.Component {
               </div>
               <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
                 <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Ведь в мире на самом деле</p>
-                <p style={{marginBottom: 0, marginTop: 10}}>целых 6 континентов! Все просто! Начинаем?</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>целых шесть континентов! А шесть, как известно, больше одного!</p>
               </div>
               <div className="icon" style={{marginTop: "7vh"}}>
                 <img className="iconimg" src={map} alt="map"/>
+              </div>
+            </div>
+          }
+          { id === 9 &&
+            <div style={{textAlign: "center", fontFamily: "Montserrat", marginTop: "8vh"}}>
+              <div>
+                <p className="hello gradient-text" style={{fontSize: "10vw", fontWeight: 700, marginBottom: 0, marginTop: 0, lineHeight: 1.2}}>Больше - меньше</p>
+              </div>
+              <div style={{textAlign: 'center', paddingRight: '10%', paddingLeft: '10%'}}>
+                <p className="dogeo gradient-text" style={{fontSize: "5vw", marginBottom: 0, marginTop: 30, fontWeight: 500}}>Набирайте очки!</p>
+                <p style={{marginBottom: 0, marginTop: 10}}>Правильный ответ прибавит 1 балл к вашему рейтингу, а ошибка будет строить -0,5 балла. Но в минус все равно уйти не получится!</p>
+              </div>
+              <div className="icon" style={{marginTop: "7vh"}}>
+                <img className="iconimg" src={score} alt="score"/>
               </div>
             </div>
           }

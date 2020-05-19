@@ -4,6 +4,8 @@ import { Button, Group, Card, CardGrid, SimpleCell, Avatar } from '@vkontakte/vk
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 import Icon24BrowserForward from '@vkontakte/icons/dist/24/browser_forward';
 
+import {getCountry} from '../../Utils'
+
 class LGQuestionCard extends React.Component {
 	constructor(props) {
         super(props);
@@ -13,14 +15,7 @@ class LGQuestionCard extends React.Component {
             imageHeight : 350
         }
     }
-  
-  getCountry(code){
-    if (code === 'ru'){
-      return 'Россия'
-    } else if (code === 'world'){
-      return 'Весь мир'
-    }
-  }
+
 
 	render() {
     let { cardnumber, total, firstPart, number, unit, flag, country, cardButton } = this.props
@@ -34,7 +29,7 @@ class LGQuestionCard extends React.Component {
                   Карточка {cardnumber + 1}/{total}
                 </div>
                 <div style={{marginTop: "2vh", paddingLeft: "5%", paddingRight: "5%", marginBottom: "5%"}}>
-                  <SimpleCell disabled before={<Avatar size={40} src={flag} />}>{this.getCountry(country)}</SimpleCell>
+                  <SimpleCell disabled before={<Avatar size={40} src={flag} />}>{getCountry(country)}</SimpleCell>
                 </div>
                 <div style={{marginTop: "10vh", fontSize: "3vh", textAlign: "center"}}>
                   {firstPart}

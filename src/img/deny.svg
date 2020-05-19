@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .a {
+        fill: #9a2c16;
+        opacity: 0.41;
+      }
+
+      .b {
+        fill: #a31f21;
+      }
+    </style>
+  </defs>
+  <title>deny</title>
+  <circle class="a" cx="10" cy="9.875" r="9.5"/>
+  <circle class="b" cx="10" cy="9.875" r="7.25"/>
+</svg>

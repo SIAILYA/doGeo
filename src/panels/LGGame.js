@@ -74,6 +74,7 @@ class LGGame extends React.Component {
       }
       this.state.questions.push(question)
       this.state.rightAnswers.push(question.number > question.target ? "Lower": "Greater")
+      this.props.generatedQuestions.push(question)
     }
   }
 
@@ -85,9 +86,10 @@ class LGGame extends React.Component {
     }
 
     if (this.state.currentQuestion === questions.length) {
-      console.log('call')
       endGame('LG', this.verifyAnswers(this.state.sessionAnswers, this.state.rightAnswers));
       this.setState({currentQuestion: null})
+      this.props.history.push('pa_lggameendpanel');
+      window.history.pushState({view: 'lggameendpanel'}, 'lggameendpanel');
     }
 
     return (

@@ -17,7 +17,7 @@ class LearnGame extends React.Component {
     }
   
   nextCard() {
-    if (this.state.slideIndex === 3){
+    if (this.state.slideIndex === 4){
       bridge.send("VKWebAppStorageSet", {"key": "endLGLearning", "value": "true"})
       bridge.send("VKWebAppStorageGet", {"keys": ['endLGLearning']})
       this.props.endLearning(this.props.gameMode)
@@ -55,16 +55,19 @@ class LearnGame extends React.Component {
                           <LearnCard
                             id={8}
                             />
+                          <LearnCard
+                            id={9}
+                            />
                     </Gallery>
                   }
                   <Div style={{marginTop: "2vh", paddingLeft: "2vh", paddingRight: "2vh"}}>
                     <Button
                       className="buttonPurple"
-                      after={this.state.slideIndex === 3 ? null: <Icon28ArrowRightOutline/>}
+                      after={this.state.slideIndex === 4 ? null: <Icon28ArrowRightOutline/>}
                       style={{position: "relative", bottom: '10', width: "70%", height: "5vh", left: "15%", fontFamily: "Montserrat", fontSize: "5vh"}}
                       onClick={() => this.nextCard()}
                     >
-                      {this.state.slideIndex === 3 ? "Понятно!": "Дальше!"}
+                      {this.state.slideIndex === 4 ? "Понятно!": "Дальше!"}
                     </Button>
                   </Div>
                 </Group>

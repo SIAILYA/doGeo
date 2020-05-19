@@ -13,9 +13,19 @@ class StartCard extends React.Component {
             imageHeight : 350
         }
     }
-    
+  
+  handler(e) {
+    this.props.history.push('vi_' + e.currentTarget.dataset.view);
+    window.history.pushState({view: e.currentTarget.dataset.view}, e.currentTarget.dataset.view);
+    if (e.currentTarget.dataset.view === 'gameview'){
+      this.props.startGame(this.props.gameMode)
+    } else {
+      this.props.startLearning(this.props.gameMode)
+    }
+  }
+
 	render() {
-    let {title, description, disabled, startGame, startLearning, Gmode, learnLG} = this.props
+    let {title, description, disabled, learnLG} = this.props
 
 		return (
         <Group separator="hide">
@@ -40,18 +50,23 @@ class StartCard extends React.Component {
                     className="buttonPurple"
                     stretched size='l' 
                     style={{width: "70%", position: "relative", right: "2.5%"}}
-                    onClick={learnLG ? () => startGame(Gmode) : () => startLearning(Gmode)}>
+                    data-view={learnLG ? 'gameview' : 'learnview'}
+                    onClick={this.handler.bind(this)}>
                       {
                         learnLG ? "Играть" : "Как играть?"
                       }
                     </Button>
-                    <Button
-                    className="buttonPurple"
-                    size='l' 
-                    style={{width: "15%", position: "relative", left: "2.5%"}}
-                    onClick={() => startLearning(Gmode)}>
-                    <Icon28HelpOutline />
-                    </Button>
+                    {
+                      learnLG &&
+                      <Button
+                      className="buttonPurple"
+                      size='l' 
+                      style={{width: "15%", position: "relative", left: "2.5%"}}
+                      data-view={'learnview'}
+                      onClick={this.handler.bind(this)}>
+                      <Icon28HelpOutline />
+                      </Button>
+                    }
                   </div>
                 }
                 {

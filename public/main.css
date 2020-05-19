@@ -128,3 +128,19 @@
   color: var(--purple-dark)!important;
   font-family: "Montserrat";
 }
+
+.ModalCard__container{
+  margin-bottom: 8vh!important;
+}
+
+.firstGold{
+  background: linear-gradient(45deg, #FDC830, #F37335)!important;
+}
+
+.secondSilver{
+  background: linear-gradient(45deg, #bdc3c7, #2c3e50)!important;
+}
+
+.thirdBronse{
+  background: linear-gradient(45deg, #e53935, #e35d5b)!important;
+}

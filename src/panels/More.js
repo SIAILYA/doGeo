@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, Button, Div, Header, Group, Avatar, SimpleCell, Switch, PanelHeaderButton, ModalPage,
+import { Panel, PanelHeader, Button, Div, Header, Group, SimpleCell, Switch, PanelHeaderButton, ModalPage,
   ModalRoot, ModalPageHeader } from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back'
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
@@ -10,10 +10,12 @@ import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
 import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
 import Icon28CopyOutline from '@vkontakte/icons/dist/28/copy_outline';
 import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
+import Icon28DeleteOutlineAndroid from '@vkontakte/icons/dist/28/delete_outline_android';
+import Icon28PrivacyOutline from '@vkontakte/icons/dist/28/privacy_outline';
+import Icon28CheckSquareOutline from '@vkontakte/icons/dist/28/check_square_outline';
 
 import bridge from '@vkontakte/vk-bridge';
-
-import {BACKEND} from '../Config.js';
+import {BACKEND} from '../Config'
 
 class More extends React.Component {
 	constructor(props) {
@@ -23,8 +25,7 @@ class More extends React.Component {
       slideIndex: 0,
       imageHeight : 350,
       qrTooltip: false,
-      activeModal: null,
-      userRating: null
+      activeModal: null
     }
 
     this.modalBack = () => {
@@ -95,47 +96,12 @@ class More extends React.Component {
     
   }
 
-  setRating(r) {
-    if (this.state.userRating === null) {
-      this.setState({userRating: '...'})
-    } else {
-      let word = ''
-      let rating = r
-      if (rating < 20) {
-        if (rating >= 5 || rating === 0){
-          word = 'очков'
-        } else if (rating === 2 || rating === 3 || rating === 4){
-          word = 'очка'
-        } else {
-          word = 'очко'
-        }
-      } else {
-        if (rating % 10 === 0){
-          word = 'очков'
-        } else if (rating % 10 === 1){
-          word = 'очко'
-        } else {
-          word = 'очка'
-        }
-      }
-      this.setState({userRating: rating + ' ' + word})
-    }
-  }
 
 	render() {
     let { id, themeUpdate, scheme, user } = this.props
     if (!user.first_name){
       bridge.send('VKWebAppGetUserInfo');
     }
-    if (this.state.userRating === null){
-      this.setState(
-        { userRating: '...' }
-      )
-      axios.get(BACKEND + '/api/getuserrating/' + user.id).then(response =>
-        this.setRating(response.data)
-      )
-    }
-
 
 		return (
             <Panel id={id} style={{ marginBottom : 5 }}>
@@ -144,18 +110,6 @@ class More extends React.Component {
                 <PanelHeader>Другое</PanelHeader>
                 <Div
                   style={{paddingRight: "0", paddingLeft: "0", paddingBottom: "0"}}>
-                  <Group>
-                    <Header mode="secondary">Добрый день!</Header>
-                    <SimpleCell
-                      before={<Avatar size={48}
-                      src={user.photo_max_orig} />}
-                      after={<Icon28StoryOutline fill="var(--purple-light)"/>}
-                      description={this.state.userRating}
-                      onClick={this.createStory}
-                    >
-                      {user.first_name} {user.last_name}
-                    </SimpleCell>
-                  </Group>
                   <Group>
                     <Header mode="secondary">Внешний вид</Header>
                     {
@@ -221,11 +175,31 @@ class More extends React.Component {
                   <Group>
                     <Header mode="secondary">Прочее</Header>
                     <SimpleCell
-                      before={<Icon28CopyOutline fill="var(--purple-light)"/>}
+                      before={<Icon28PrivacyOutline fill="var(--purple-light)"/>}
                       description="Пользуясь приложением..."
                       onClick={()  => {this.setState({activeModal: "agreement"})}}
                     >
                       Соглашения
+                    </SimpleCell>
+                    <SimpleCell
+                      before={<Icon28DeleteOutlineAndroid fill="var(--purple-light)"/>}
+                      description="Ваш рейтинг не изменится!"
+                      onClick={() => {
+                                bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})
+                                bridge.send("VKWebAppStorageSet", {"key": "endLGLearning", "value": 'false'})
+                                console.log('Состояния обучений сброшены!')
+                              }}
+                    >
+                      Сбросить обучения
+                    </SimpleCell>
+                    <SimpleCell
+                      before={<Icon28CheckSquareOutline fill="var(--purple-light)"/>}
+                      description="Ответ ищите в консоли :)"
+                      onClick={() => {console.log('Проверяем API, resource: '+ BACKEND)
+                              axios.get(BACKEND + '/api/test')
+                              .then(response => console.log(response))}}
+                    >
+                      Тест доступа к API
                     </SimpleCell>
                   </Group>
                   <ModalRoot

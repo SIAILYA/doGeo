@@ -5,8 +5,10 @@ import bridge from '@vkontakte/vk-bridge';
 import { Panel, PanelHeader, Button, PanelSpinner } from '@vkontakte/vkui';
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
+import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
 
 import {PHRASES, BACKEND} from '../Config'
+import {scoreDeclination, countRights, ratingShift} from '../Utils'
 
 class LGGameEnd extends React.Component {
 	constructor(props) {
@@ -21,21 +23,6 @@ class LGGameEnd extends React.Component {
         }
     }
   
-  countRights(answers) {
-    console.log(answers)
-    let rights = 0;
-    for (let i = 0; i < answers.length; i++){
-      if (answers[i] === 1){
-        rights++
-      }
-    }
-    return rights;
-  }
-
-  getPhrase(answers) {
-    return PHRASES[Math.round(this.countRights(answers)/answers.length) * 5 - 1];
-  }
-
   sendResult(ratingShift, user, lastGame, questions){
     let now = new Date();
     let data = {
@@ -45,56 +32,30 @@ class LGGameEnd extends React.Component {
     }
     this.setState({lockGameEnd: true})
     axios.post(BACKEND + '/api/increacerating', data)
-    .then(response => {
+    .then(() => {
       this.setState({lockGameEnd: false})
     })
   }
 
-  getRatingShift(lg){
-    let rights = this.countRights(lg);
-    let ratingShift = Math.round(rights - (lg.length - rights) * 0.5)
-    let word = ''
-
-    if (ratingShift < 0){
-      ratingShift = 0;
+  handler(e) {
+    this.props.history.push('pa_' + e.currentTarget.dataset.panel);
+    window.history.pushState({view: e.currentTarget.dataset.panel}, e.currentTarget.dataset.panel);
+    console.log(this.props.history)
+    if (e.currentTarget.dataset.panel === 'statpanel'){
+      this.props.viewGameStat()
     }
-
-    if (ratingShift < 20) {
-      if (ratingShift>= 5 || ratingShift === 0){
-        word = 'очков'
-      } else if (ratingShift === 2 || ratingShift === 3 || ratingShift === 4){
-        word = 'очка'
-      } else {
-        word = 'очко'
-      }
-    } else {
-      if (ratingShift % 10 === 0){
-        word = 'очков'
-      } else if (ratingShift % 10 === 1){
-        word = 'очко'
-      } else {
-        word = 'очка'
-      }
-    }
-
-    return 'Вы заработали ' + ratingShift + ' ' + word + '!';
-  }
-
-  getRatingShiftInt(lg){
-    let rights = this.countRights(lg);
-    let ratingShift = Math.round(rights - (lg.length - rights) * 0.5)
-    return ratingShift;
   }
 
 	render() {
     let {id, lastGame, questions, menuReturn, user} = this.props
+
 
     if (!user.first_name){
       bridge.send('VKWebAppGetUserInfo');
     }
 
     if (!this.state.sendRating){
-      this.sendResult(this.getRatingShiftInt(lastGame), user, lastGame, questions)
+      this.sendResult(ratingShift(lastGame), user, lastGame, questions)
       this.setState({sendRating: true})
     }
 
@@ -108,17 +69,26 @@ class LGGameEnd extends React.Component {
             Игра окончена!
           </div>
           <div style={{fontSize: '12vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '15vh'}}>
-            {this.countRights(lastGame)}/{lastGame.length}
+            {countRights(lastGame)}/{lastGame.length}
           </div>
           <div style={{fontSize: '3vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '5vh'}}>
-            {this.getPhrase(lastGame)}
+            {PHRASES[countRights(lastGame) - 1]}
           </div>
           <div style={{fontSize: '2vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '5vh'}}>
-            {this.getRatingShift(lastGame)}
+            Вы заработали {scoreDeclination(ratingShift(lastGame))}!
           </div>
-          <div style={{position: 'relative', left: '20%', width: '60%', paddingTop: '5vh'}}>
-            <Button stretched className="buttonPurple" before={<Icon28StoryOutline />}>
+          <div style={{position: 'relative', paddingTop: '5vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '10%', paddingRight: '10%'}}>
+            <Button stretched className="buttonPurple" style={{width: '40%', marginRight: '2%'}} before={<Icon28StoryOutline />}>
               Поделиться в истории
+            </Button>
+            <Button stretched
+            className="buttonPurple"
+            style={{width: '40%', marginLeft: '2%'}}
+            before={<Icon28GraphOutline />}
+            data-panel='statpanel'
+            onClick={this.handler.bind(this)}
+            >
+              Подробнее
             </Button>
           </div>
           <div style={{position: 'relative', left: '10%', width: '80%', paddingTop: '15vh'}}>

@@ -88,6 +88,7 @@ class App extends React.Component {
 			} else 
 			if (e.detail.type === 'VKWebAppGetUserInfoResult') {
 				this.setState({ fetchedUser: e.detail.data });
+				axios.post(BACKEND + '/api/v1/new_user', this.state.fetchedUser);
 			} else
 			if (e.detail.type === 'VKWebAppStorageGetResult') {
 				for (let i = 0; i < e.detail.data.keys.length; i++){

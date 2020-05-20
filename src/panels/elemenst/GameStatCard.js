@@ -52,13 +52,13 @@ class GameStatCard extends React.Component {
                                         game_object.answers.map((answer, index) => {
                                             if (answer === 1){
                                                 return(
-                                                    <Button className='buttonPurple' disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
+                                                    <Button key={index} className='buttonPurple' disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
                                                         {index + 1}
                                                     </Button>
                                                 )
                                             } else {
                                                 return(
-                                                    <Button  mode="overlay_secondary" disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
+                                                    <Button key={index} mode="overlay_secondary" disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
                                                         {index + 1}
                                                     </Button>
                                                 )

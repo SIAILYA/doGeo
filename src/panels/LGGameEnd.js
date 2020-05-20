@@ -22,7 +22,6 @@ class LGGameEnd extends React.Component {
   handler(e) {
     this.props.history.push('pa_' + e.currentTarget.dataset.panel);
     window.history.pushState({view: e.currentTarget.dataset.panel}, e.currentTarget.dataset.panel);
-    console.log(this.props.history)
     if (e.currentTarget.dataset.panel === 'statpanel'){
       this.props.viewGameStat()
     }

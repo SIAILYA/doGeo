@@ -30,7 +30,6 @@ class More extends React.Component {
   }
   
   createStory() {
-    console.log(123);
     bridge.send("VKWebAppShowStoryBox",
     {
       "background_type": "none",

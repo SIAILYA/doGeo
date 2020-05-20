@@ -16,7 +16,6 @@ class Rating extends React.Component {
     }
 
     updateRating() {
-        console.log('upd')
         this.props.loadRating()
     }   
  
@@ -31,7 +30,7 @@ class Rating extends React.Component {
             >
                 <Panel id="ratingpanel">
                     <PanelHeader>Рейтинг</PanelHeader>
-                    <PullToRefresh onRefresh={() => this.updateRating()} isFetching={loadingRating}>
+                    <PullToRefresh onRefresh={() => this.updateRating()} isFetching={false}>
                         {
                             ratingUsers.top !== undefined &&
                             <div style={{paddingTop: '2vh', paddingBottom: '2vh', fontFamily: 'Montserrat', color: 'white'}}>

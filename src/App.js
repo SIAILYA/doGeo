@@ -214,10 +214,8 @@ class App extends React.Component {
 				rating_game: this.state.ratingGame,
 				exclude_tags: this.state.freePlayTags
 			}
-			console.log(settings)
 			axios.post(BACKEND + '/api/v1/get_lg_questions', settings)
 			.then(res => {
-				console.log(res.data)
 				this.setState({questions: res.data, mainview: 'gameview', gamepanel: 'lggamepanel'})
 			})
 			.catch(() => {this.setState({serverError: true})})

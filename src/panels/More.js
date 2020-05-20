@@ -94,7 +94,7 @@ class More extends React.Component {
 
 
 	render() {
-    let { id, themeUpdate, scheme, user } = this.props
+    let { id, themeUpdate, scheme, user, addQuestion } = this.props
     if (!user.first_name){
       bridge.send('VKWebAppGetUserInfo');
     }
@@ -162,8 +162,8 @@ class More extends React.Component {
                     </SimpleCell>
                     <SimpleCell
                       before={<Icon28InboxOutline fill="var(--purple-light)"/>}
-                      description="Или сообщить об ошибке"
-                      disabled
+                      description=""
+                      onClick={() => {addQuestion()}}
                     >
                       Предложить факт
                     </SimpleCell>

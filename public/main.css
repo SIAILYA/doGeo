@@ -144,3 +144,15 @@
 .thirdBronse{
   background: linear-gradient(45deg, #e53935, #e35d5b)!important;
 }
+
+.rightAnswer, .wrongAnswer{
+  border-radius: 100px!important;
+}
+
+.rightAnswer{
+  background: linear-gradient(45deg, #eb5350, #e35d5b)!important;
+}
+
+.wrongAnswer{
+  background: linear-gradient(45deg, #74ca4b, #a8e063)!important;
+}

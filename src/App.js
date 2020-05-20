@@ -9,7 +9,6 @@ import Icon28MenuOutline from '@vkontakte/icons/dist/28/menu_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
 import Icon28BrainOutline from '@vkontakte/icons/dist/28/brain_outline';
 import Icon56DoNotDisturbOutline from '@vkontakte/icons/dist/56/do_not_disturb_outline';
-import Icon56RecentOutline from '@vkontakte/icons/dist/56/recent_outline';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -22,6 +21,8 @@ import LGGameEnd from "./panels/LGGameEnd"
 import GameStat from "./panels/GameStat"
 import Questions from "./panels/Questions"
 import Rating from "./panels/Rating"
+import Statistics from "./panels/Statistics"
+import AddQuestion from "./panels/AddQuestion"
 
 import { BACKEND } from './Config';
 import LGGameStart from './panels/LGGameStart';
@@ -39,6 +40,7 @@ class App extends React.Component {
 			activeFeed: 'play',
 			activeStory: 'play',
 			learnPanel : 'learnpanel',
+			morepanel: "morepanel",
 			epiclock: true,
 			authToken : null,
 			history : ['st_play'],
@@ -51,22 +53,29 @@ class App extends React.Component {
 			questions: [],
 			generatedQuestions: [],
 			learnLG: null,
-			questionsList: [],
+			questionsFeed: [],
 			loadingQuestions: true,
 			questionsPanel: 'questionspanel',
 			loadingRating: true,
 			ratingUsers: [],
 			sendRating: false,
 			lockGameEnd: false,
-			gameInfo: null,
 			allowRating: null,
 			ratingGame: false,
 			beforeRating: null,
+			searchTags: [],
+			searchMode: 1, //1 - include 0 - exclude
+			freePlayTags: [],
+			freePlayCount: 7,
+			userStatistics: null
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
-
-		setInterval(() => this.checkServer(), 15000)
+		
+		this.checkServer()
+		setInterval(() => this.checkServer(), 30000)
+		this.getRatingPlayAccess()
+		this.getUserStatistics()
 	}
 
 	componentDidMount() {	
@@ -109,15 +118,7 @@ class App extends React.Component {
 			this.setState({scheme: 'bright_light'}); 
 			bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#fff"}); 
 		}
- }
-
-	go = (e) => {
-		let activeElement = e.currentTarget.dataset.to
-		const history = [...this.state.history];
-		history.push(activeElement);
-
-		window.history.pushState({view: e.currentTarget.dataset.story}, e.currentTarget.dataset.story);
-	}
+ 	}
 
 	goBack = () => {
 		const history = [...this.state.history];
@@ -130,6 +131,9 @@ class App extends React.Component {
 				this.setState({mainview: 'epicview', activeStory: activeElement.slice(3)})
 				if (activeElement === 'st_questions'){
 					this.setState({questionsPanel: 'questionspanel'})
+				}
+				if (activeElement === 'st_more'){
+					this.setState({morepanel: 'morepanel'})
 				}
 			}
 			if (activeElement.slice(0, 2) === 'pa') {
@@ -148,22 +152,6 @@ class App extends React.Component {
 		}
 	}
 
-	endLearning() {
-		let user = this.state.fetchedUser;
-		if (!user.first_name) {
-			bridge.send('VKWebAppGetUserInfo');
-		}
-		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
-		this.setState({mainview: 'epicview'})
-		this.setState({epiclock: true})
-		axios.post(BACKEND + '/api/newuser', {user})
-		.then(res => {
-			this.setState({epiclock: false})
-		})
-		.catch(err => {this.setState({serverError: true})});
-	}
-
-	
 	onStoryChange (e) {
 		const history = [...this.state.history];
 		history.push('st_' + e.currentTarget.dataset.story);
@@ -171,42 +159,34 @@ class App extends React.Component {
 		window.history.pushState({view: e.currentTarget.dataset.story}, e.currentTarget.dataset.story);
 	}
 
-	startGame(gameMode, rating){
-		if (rating === true){
-			this.setState({ratingGame: true})
-		} else {
-			this.setState({ratingGame: false})
-		}
+	checkServer(){
+		axios.post(BACKEND + '/api/v1/test_api')
+		.then(() => {this.setState({serverError: false})})
+		.catch(() => {this.setState({serverError: true})})
+	}
 
-		if (gameMode === 'LG'){
-			this.setState({ gameMode: 'LG', ratingGame: rating })	
-			axios.get(BACKEND + '/api/getquestions/7')
-			.then(res => {
-				this.setState({questions: res.data})
-				this.setState({mainview: 'gameview', gamepanel: 'lggamepanel'})
-			})
-			.catch(err => {this.setState({serverError: true})})
+	endLearning() {
+		let user = this.state.fetchedUser;
+		if (!user.first_name) {
+			bridge.send('VKWebAppGetUserInfo');
 		}
+		bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": "true"})
+		this.setState({mainview: 'epicview', epiclock: true})
+		axios.post(BACKEND + '/api/v1/new_user', user)
+		.then(() => {
+			this.setState({epiclock: false})
+		})
+		.catch(() => {this.setState({serverError: true})});
 	}
 
 	prepareGame(gameMode){
-		this.getGameInfo()
 		if (gameMode === 'LG'){
 			this.setState({ gameMode: 'LG', mainview: 'gameview', gamepanel: 'lggamestartpanel' })
+			this.getRatingPlayAccess(gameMode)
 		}
-	}
-
-	endGame(gameMode, verified) {
-		if (gameMode === 'LG'){
-			this.setState({gamepanel: 'lggameendpanel', lastGameChecked: verified})
-		}
-	}
-
-	viewGameStat(){
-		this.setState({gamepanel: 'lastgamestat'})
 	}
 	
-	startLearning(gameMode) {
+	startGameLearning(gameMode) {
 		if (gameMode === 'LG'){
 			this.setState({ gameMode: 'LG', mainview: 'learnview', learnPanel: 'learngame' })
 
@@ -219,44 +199,65 @@ class App extends React.Component {
 		}
 	}
 
+	startGame(gameMode, rating){
+		if (rating === true){
+			this.setState({ratingGame: true})
+		} else {
+			this.setState({ratingGame: false})
+		}
+
+		if (gameMode === 'LG'){
+			this.setState({ gameMode: 'LG', ratingGame: rating })	
+			let settings = {
+				current_user_id: this.state.fetchedUser.id,
+				count: rating ? 7 : this.state.freePlayCount,
+				rating_game: this.state.ratingGame,
+				exclude_tags: this.state.freePlayTags
+			}
+			console.log(settings)
+			axios.post(BACKEND + '/api/v1/get_lg_questions', settings)
+			.then(res => {
+				console.log(res.data)
+				this.setState({questions: res.data, mainview: 'gameview', gamepanel: 'lggamepanel'})
+			})
+			.catch(() => {this.setState({serverError: true})})
+		}
+	}
+
+	viewGameStat(){
+		this.setState({gamepanel: 'lastgamestat'})
+	}
+	
 	menuReturn(){
 		this.setState({ mainview: 'epicview', history : ['st_play'] })
 	}
 
-	checkServer(){
-		axios.get(BACKEND + '/api/test')
-		.then(response => {this.setState({serverError: false})})
-		.catch(err => {this.setState({serverError: true})})
-	}
-
-	getFirstQuestions(){
-        axios.get(BACKEND + '/api/getquestionslg/' + this.state.questionsList.length + '/10')
+	getFeedQuestions(){
+		let settings = {
+			offset: this.state.questionsFeed.length,
+			search_exclude: this.state.searchTags
+		}
+        axios.post(BACKEND + '/api/v1/get_feed_questions', settings)
         .then(res =>{
-            this.setState({questionsList: res.data, loadingQuestions: false})
-
-        })
-        .catch(error =>{
-            this.setState({serverError: true})
+            this.setState({questionsFeed: res.data, loadingQuestions: false})
         })
     }
 
-
-    addQuestions(){
-        this.setState({loadingQuestions: true})
-        axios.get(BACKEND + '/api/getquestionslg/' + this.state.questionsList.length + '/10')
+    addFeedQuestions(){
+		this.setState({loadingQuestions: true})
+		let settings = {
+			offset: this.state.questionsFeed.length,
+			search_exclude: this.state.searchTags
+		}
+        axios.post(BACKEND + '/api/v1/get_feed_questions', settings)
         .then(res =>{
-            let newQuestions = this.state.questionsList
+            let newQuestions = this.state.questionsFeed
             res.data.forEach(element => {
                 newQuestions.push(element)
-            });
-            this.setState({questionsList: newQuestions, loadingQuestions: false})
-        })
-        .catch(error =>{
-            this.setState({serverError: true, loadingQuestions: false})
-            return null;
+			});
+            this.setState({questionsFeed: newQuestions, loadingQuestions: false})
         })
 	}
-
 
 	openSearch(){
 		this.setState({questionsPanel: 'searchpanel'})
@@ -267,48 +268,60 @@ class App extends React.Component {
 	}
 
 	getGlobalRating(){
-		axios.get(BACKEND + '/api/getglobalrating/' + this.state.fetchedUser.id)
+		this.setState({epiclock: true})
+		axios.post(BACKEND + '/api/v1/get_global_rating', {user_id: this.state.fetchedUser.id})
 		.then(res => {
-			this.setState({ratingUsers: res.data, loadingRating: false})
+			this.setState({ratingUsers: res.data, epiclock: false})
 		})
 	}
-
-	getGameInfo(){
-		axios.get(BACKEND + '/api/getgamehistory/' + this.state.fetchedUser.id)
-		.then(res => {
-			this.setState({gameInfo: res.data})
-			if (res.data.gametimes.length === 5){
-				let now = new Date()
-				this.setState({allowRating: false, beforeRating: Math.abs(new Date(new Date(res.data.gametimes[0]).getTime() + 24*60*60*1000) - now) / (1000 * 60)})
-			} else {
-				this.setState({allowRating: 5 - res.data.gametimes.length})
-			}
-		})
-	}
-
 	
-	sendResult(ratingShift, user, lastGame, questions){
-		if (this.state.ratingGame){
-			this.setState({sendRating: true})
-			let now = new Date();
+	getRatingPlayAccess(gameMode){
+		axios.post(BACKEND + '/api/v1/rating_play_access', {user_id: this.state.fetchedUser.id, game_mode: gameMode}).then(res => {
+			this.setState({allowRating: res.data})
+		})
+	}
+	
+	sendResult(lastGameAnswers){
+		if (this.state.gameMode === 'LG'){
+			this.setState({sendRating: true, lockGameEnd: true, gamepanel: 'lggameendpanel'})
 			let data = {
-			  "user_id": user.id,
-			  "rating_shift": ratingShift,
-			  "game_data": {'date': now, 'answers': lastGame, 'questions': questions}
+				user_id: this.state.fetchedUser.id,
+				rating_play: this.state.ratingGame,
+				mode: this.state.gameMode,
+				date: new Date(),
+				answers: lastGameAnswers,
+				questions: this.state.questions
 			}
-			this.setState({lockGameEnd: true})
-			axios.post(BACKEND + '/api/increacerating', data)
-			.then(() => {
-			  this.setState({lockGameEnd: false})
+			axios.post(BACKEND + '/api/v1/end_game', data)
+			.then(res => {
+				this.setState({lockGameEnd: false, lastGameChecked: res.data})
+				this.state.history.push('pa_lggameendpanel');
+				window.history.pushState({view: 'lggameendpanel'}, 'lggameendpanel');
 			})
 		}
-	  }
+	}
+
+	getUserStatistics(){
+		this.setState({epiclock: true})
+		axios.post(BACKEND + '/api/v1/get_user_stat', {user_id: this.state.fetchedUser.id})
+		.then(res => {
+			this.setState({userStatistics: res.data, epiclock: false})
+		})
+	}
+
+	addQuestion(){
+		this.setState({morepanel: 'addpanel'})
+		const history = [...this.state.history];
+		history.push('pa_questionadd');
+		this.setState({ history: history })
+		window.history.pushState({view: 'pa_questionadd'}, 'pa_questionadd');
+	}
+
+	sendQuestion(question){
+		axios.post(BACKEND + '/api/v1/add_user_question', question)
+	}
 
 	render() {
-		if (this.state.gameInfo === null && this.state.fetchedUser.id){
-			this.getGameInfo()
-		}
-
 		return (
 			<ConfigProvider
 			isWebView={true}
@@ -347,8 +360,8 @@ class App extends React.Component {
 								</TabbarItem>
 								<TabbarItem
 									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'history'}
-									data-story="history"
+									selected={this.state.activeStory === 'statistics'}
+									data-story="statistics"
 								><Icon28HistoryBackwardOutline />
 								</TabbarItem>
 								<TabbarItem
@@ -364,7 +377,7 @@ class App extends React.Component {
 									id="playpanel"
 									scheme={this.state.scheme}
 									startGame={this.prepareGame.bind(this)}
-									startLearning={this.startLearning.bind(this)}
+									startLearning={this.startGameLearning.bind(this)}
 									learnLG={this.state.learnLG}
 									history={this.state.history}
 									/>
@@ -382,27 +395,36 @@ class App extends React.Component {
 								<Questions 
 									id='questionsview'
 									history={this.state.history}
-									questionsList={this.state.questionsList}
-									getFirstQuestions={() => this.getFirstQuestions()}
-									addQuestions={() => this.addQuestions()}
+									questionsList={this.state.questionsFeed}
+									getFirstQuestions={() => this.getFeedQuestions()}
+									addQuestions={() => this.addFeedQuestions()}
 									loadingQuestions={this.state.loadingQuestions}
 									questionsPanel={this.state.questionsPanel}
 									openSearch={() => this.openSearch()}
 								/>
 							</View>
-							<View id="history" activePanel="historypanel">
-								<Panel id="historypanel">
-									<PanelHeader>История</PanelHeader>
-									<Placeholder icon={<Icon56RecentOutline />} header="Раздел уже в работе!"></Placeholder>
-								</Panel>
+							<View id="statistics" activePanel="statisticspanel">
+								<Statistics
+									id='statisticspanel'
+									user={this.state.fetchedUser}
+									user_stat={this.state.userStatistics}
+									get_stat={() => this.getUserStatistics()}
+								/>
 							</View>
-							<View id="more" activePanel="morepanel">
+							<View id="more" activePanel={this.state.morepanel}>
 								<More
 									id='morepanel'
 									themeUpdate={() => this.updateTheme()}
 									scheme={this.state.scheme}
 									user={this.state.fetchedUser}
-									/>
+									addQuestion={() => this.addQuestion()}
+								/>
+								<AddQuestion
+									id='addpanel'
+									sendQuestion={this.sendQuestion}
+									user={this.state.fetchedUser}
+									goBack={() => this.goBack()}
+								/>
 							</View>
 					</Epic>
 					</Panel>
@@ -428,32 +450,24 @@ class App extends React.Component {
 				<View id='gameview' activePanel={this.state.gamepanel}>
 					<LGGameStart
 						id='lggamestartpanel'
-						gameInfo={this.state.gameInfo}
 						allowRating={this.state.allowRating}
 						beforeRating={this.state.beforeRating}
-						history={this.state.history}
 						startGame={this.startGame.bind(this)}
 					/>
 					<LGGame
 						id='lggamepanel'
-						lastGame={this.state.lastGame}
-						endGame={this.endGame.bind(this)}
-						history={this.state.history}
 						questions={this.state.questions}
 						generatedQuestions={this.state.generatedQuestions}
+						sendResult={this.sendResult.bind(this)}
 					/>
 					<LGGameEnd
 						id='lggameendpanel'
 						lastGame={this.state.lastGameChecked}
-						user={this.state.fetchedUser}
 						history={this.state.history}
-						questions={this.state.questions}
-						generatedQuestions={this.state.generatedQuestions}
 						menuReturn={this.menuReturn.bind(this)}
 						viewGameStat={this.viewGameStat.bind(this)}
-						sendResult={this.sendResult.bind(this)}
 						lockGameEnd={this.state.lockGameEnd}
-						sendRating={this.state.sendRating}
+						ratingGame={this.state.ratingGame}
 					/>
 					<GameStat
 						id='lastgamestat'

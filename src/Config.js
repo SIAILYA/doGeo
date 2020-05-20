@@ -8,3 +8,8 @@ export const PHRASES = [
     'Супер! Отлично! Класс!',
     'Идеально!'
 ]
+export const REQUEST_CONFIG = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }

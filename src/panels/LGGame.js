@@ -6,6 +6,7 @@ import Zoom from 'react-reveal/Zoom';
 import LGQuestionCard from './elemenst/LGQuestionCard';
 import Timer from './elemenst/timer/timer'
 
+
 class LGGame extends React.Component {
   constructor (props) {
     super(props);
@@ -14,10 +15,8 @@ class LGGame extends React.Component {
       slideIndex: 1,
       currentAnswer: null,
       currentQuestion: 0,
-      sessionAnswers: [],
-      questions: [],
-      rightAnswers: []
-    }   
+      sessionAnswers: []
+    }
   }
 
   drag(e) {
@@ -49,67 +48,32 @@ class LGGame extends React.Component {
       sessionAnswers: answers})
   }
 
-  verifyAnswers(answers, right) {
-    let verify = [];
-    for (let i = 0; i < answers.length; i++){
-      if (answers[i] === right[i]){
-        verify.push(1)
-      } else {
-        verify.push(0)
-      }
-    }
-    return verify;
-  }
-
-  generateQuestionsAnswers(rawQuestions){
-    for (let i = 0; i < rawQuestions.length; i++){
-      let rawQ = rawQuestions[i]
-      let question = {
-        firstPart: rawQ['firstPart'],
-        number: parseFloat(rawQ['variables'][Math.floor(Math.random() * rawQ['variables'].length)]),
-        units: rawQ['units'],
-        target: rawQ['number'],
-        country: rawQ['country'],
-        flag: rawQ['flag']
-      }
-      this.state.questions.push(question)
-      this.state.rightAnswers.push(question.number > question.target ? "Lower": "Greater")
-      this.props.generatedQuestions.push(question)
-    }
-  }
-
   render () {
-    let { id, endGame, questions } = this.props;
+    let { id, questions, sendResult } = this.props;
     
-    if (this.state.questions.length === 0){
-      this.generateQuestionsAnswers(questions)
-    }
-
     if (this.state.currentQuestion === questions.length) {
-      endGame('LG', this.verifyAnswers(this.state.sessionAnswers, this.state.rightAnswers));
+      sendResult(this.state.sessionAnswers)
       this.setState({currentQuestion: null})
-      this.props.history.push('pa_lggameendpanel');
-      window.history.pushState({view: 'lggameendpanel'}, 'lggameendpanel');
     }
 
     return (
-        <Panel id={id}>
-          <PanelHeader>Больше - меньше</PanelHeader>
-            <div style={{textAlign: "center", marginTop: "5%", fontSize: '2vh'}}>
-              <Timer />
-            </div>
-            <Gallery
-              slideWidth="90%"
-              align="center"
-              style={{ height: "85vh" }}
-              onDragEnd={this.drag.bind(this)}
-              slideIndex={this.state.slideIndex}
-            >
-              <div />
+      <Panel id={id}>
+        <PanelHeader>Больше - меньше</PanelHeader>
+          <div style={{textAlign: "center", marginTop: "5%", fontSize: '2vh'}}>
+            <Timer />
+          </div>
+          <Gallery
+            slideWidth="90%"
+            align="center"
+            style={{ height: "85vh" }}
+            onDragEnd={this.drag.bind(this)}
+            slideIndex={this.state.slideIndex}
+          >
+            <div />
               <div>
                 <div>
                 {
-                  this.state.questions.map((question, index, array) => {
+                  questions.map((question, index, array) => {
                     return(
                       <div key={index}>
                         {
@@ -133,9 +97,9 @@ class LGGame extends React.Component {
                 }
                 </div>
               </div>
-              <div />
-            </Gallery>
-        </Panel>
+            <div />
+          </Gallery>
+      </Panel>
     )
   }
 }

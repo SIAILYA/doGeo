@@ -14,18 +14,17 @@ class LGGameStart extends React.Component {
             imageHeight : 350,
         }
     }
-  
 
-  handler(e) {
-    if (e.currentTarget.dataset.play === 'rating'){
-        this.props.startGame('LG', true)
-    } else {
-        this.props.startGame('LG', false)
+    handler(e) {
+        if (e.currentTarget.dataset.play === 'rating'){
+            this.props.startGame('LG', true)
+        } else {
+            this.props.startGame('LG', false)
+        }
     }
-  }
 
 	render() {
-        let {id, allowRating, beforeRating} = this.props
+        let {id, allowRating} = this.props
         
         return (
             <Panel id={id}>
@@ -36,10 +35,10 @@ class LGGameStart extends React.Component {
                     action={
                         allowRating
                         ? <Button className='buttonPurple' data-play='rating' size="l" style={{width: '60vw'}} onClick={this.handler.bind(this)}>Играть!</Button>
-                        : <Button disabled size="l" style={{width: '60vw', background: "linear-gradient(135deg, #bdc3c7, 50%, #2c3e50)"}}>Играть!</Button>
+                        : <Button disabled size="l" style={{width: '60vw', background: "linear-gradient(135deg, #bdc3c7, 50%, #2c3e50)"}}>Возвращайтесь завтра :)</Button>
                     }
                 >
-                    Очки будут засчитаны и учтены в таблице рейтинга{<br/>}Рейтинговая игра будет доступна через {Math.round(beforeRating / 60)} часов
+                    Очки будут засчитаны и учтены в таблице рейтинга{<br/>}Но играть на рейтинг можно только 5 раз в сутки!
                 </Placeholder>
                 <Separator wide />
                 <Placeholder

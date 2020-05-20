@@ -20,7 +20,7 @@ class Start extends React.Component {
     }
     
 	render() {
-        let { id, lastGame, questions, menuReturn, generatedQuestions } = this.props
+        let { id, lastGame, menuReturn } = this.props
 
 		return (
             <Panel id={id} style={{ marginBottom : 0, paddingRight: 0, paddingLeft: 0 }}>
@@ -33,7 +33,7 @@ class Start extends React.Component {
                     Статистика игры:
                 </div>
                 {
-                    questions.map((question, index) => {
+                    lastGame.map((question, index) => {
                         return(
                             <div style={{marginBottom: '2vh', textAlign: 'left'}}>
                                 <Group
@@ -42,7 +42,7 @@ class Start extends React.Component {
                                     <Header
                                     mode="secondary">
                                         Вопрос №{index + 1} {
-                                            lastGame[index] === 1 
+                                            question.answered === true
                                             ? <img style={{marginBottom: '-2px'}} width='6%' src={allow} alt='okay!'></img>
                                             : <img style={{marginBottom: '-2px'}} width='6%' src={deny} alt='no...'></img>
                                             }
@@ -65,7 +65,7 @@ class Start extends React.Component {
                                                 Вопрос:
                                             </div>
                                             <div>
-                                                <p>{generatedQuestions[index].firstPart} <span style={{color: "var(--purple-dark)", fontWeight: 500, fontSize: '1.5em'}}>{generatedQuestions[index].number}</span> {generatedQuestions[index].units}</p>
+                                                <p>{question.firstPart} <span style={{color: "var(--purple-dark)", fontWeight: 500, fontSize: '1.5em'}}>{question.user_number}</span> {question.units}</p>
                                             </div>
                                             <div style={{fontWeight: 600, paddingTop: "2vh", marginBottom: "-1vh"}}>
                                                 Верно:
@@ -75,9 +75,9 @@ class Start extends React.Component {
                                             </div>
                                             <div>
                                                 {
-                                                    lastGame[index] === 1
-                                                    ? <p style={{color: '#76c976'}}>Вы ответили верно <span style={{fontSize: '0.8em'}}>({generatedQuestions[index].number} {generatedQuestions[index].number > question.number ? '>' : '<'} {question.number} - на самом деле {generatedQuestions[index].number > question.number ? 'меньше' : 'больше'})</span></p>
-                                                    : <p style={{color: '#a31f21'}}>Вы ответили неверно <span style={{fontSize: '0.8em'}}>({generatedQuestions[index].number} {generatedQuestions[index].number > question.number ? '>' : '<'} {question.number} - на самом деле {generatedQuestions[index].number > question.number ? 'меньше' : 'больше'})</span></p>
+                                                    question.answered === true
+                                                    ? <p style={{color: '#76c976'}}>Вы ответили верно <span style={{fontSize: '0.8em'}}>({question.user_number} {question.user_number > question.number ? '>' : '<'} {question.number} - на самом деле {question.user_number > question.number ? 'больше' : 'меньше'})</span></p>
+                                                    : <p style={{color: '#a31f21'}}>Вы ответили неверно <span style={{fontSize: '0.8em'}}>({question.user_number} {question.user_number > question.number ? '>' : '<'} {question.number} - на самом деле {question.user_number > question.number ? 'больше' : 'меньше'})</span></p>
                                                 }
                                             </div>
                                         </div>

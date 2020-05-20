@@ -1,5 +1,4 @@
 import React from 'react';
-import bridge from '@vkontakte/vk-bridge';
 // import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Button, PanelSpinner } from '@vkontakte/vkui';
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
@@ -30,16 +29,7 @@ class LGGameEnd extends React.Component {
   }
 
 	render() {
-    let {id, lastGame, questions, menuReturn, user, sendRating, lockGameEnd, sendResult} = this.props
-
-
-    if (!user.first_name){
-      bridge.send('VKWebAppGetUserInfo');
-    }
-
-    if (!sendRating){
-      sendResult(ratingShift(lastGame), user, lastGame, questions)
-    }
+    let {id, lastGame, menuReturn, lockGameEnd, ratingGame} = this.props
 
 		return (
       <Panel id={id}>
@@ -57,7 +47,7 @@ class LGGameEnd extends React.Component {
             {PHRASES[countRights(lastGame) - 1]}
           </div>
           <div style={{fontSize: '2vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '5vh'}}>
-            Вы заработали {scoreDeclination(ratingShift(lastGame))}!
+            Вы заработали {ratingGame ? '' : "бы"} {scoreDeclination(ratingShift(lastGame))}!
           </div>
           <div style={{position: 'relative', paddingTop: '5vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '10%', paddingRight: '10%'}}>
             <Button stretched className="buttonPurple" style={{width: '40%', marginRight: '2%'}} before={<Icon28StoryOutline />}>

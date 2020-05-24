@@ -124,6 +124,10 @@
   background: linear-gradient(135deg, #f53f8e, 50%, #f5226f);
 }
 
+.buttonGray{
+  background: #bdc3c7!important;
+}
+
 .purpleText{
   color: var(--purple-dark)!important;
   font-family: "Montserrat";

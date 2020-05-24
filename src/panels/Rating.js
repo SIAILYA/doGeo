@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Panel, PanelHeader, SimpleCell, List, Avatar, Card, CardGrid, Separator, FixedLayout, Header, PullToRefresh } from '@vkontakte/vkui';
+import { View, Panel, PanelHeader, SimpleCell, List, Avatar, Card, CardGrid, Separator, FixedLayout, Header } from '@vkontakte/vkui';
 
 import {scoreDeclination} from '../Utils'
 
@@ -20,7 +20,7 @@ class Rating extends React.Component {
     }   
  
 	render() {
-        let {loadingRating, ratingUsers} = this.props
+        let {ratingUsers} = this.props
 
 		return (
             <View
@@ -30,64 +30,63 @@ class Rating extends React.Component {
             >
                 <Panel id="ratingpanel">
                     <PanelHeader>Рейтинг</PanelHeader>
-                    <PullToRefresh onRefresh={() => this.updateRating()} isFetching={false}>
-                        {
-                            ratingUsers.top !== undefined &&
-                            <div style={{paddingTop: '2vh', paddingBottom: '2vh', fontFamily: 'Montserrat', color: 'white'}}>
-                                <CardGrid>
-                                    <Card className='firstGold' size="l" mode="shadow">
-                                        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
-                                            <div style={{margin: '0 auto'}}>
-                                                <Avatar size={80} src={ratingUsers.top[0].photo_max}/>
-                                            </div>
-                                            <div style={{fontSize: '1.2em'}}>
-                                                {ratingUsers.top[0].first_name} {ratingUsers.top[0].last_name}
-                                            </div>
-                                            <div style={{fontSize: '1.4em', fontWeight: 500}}>
-                                                {scoreDeclination(ratingUsers.top[0].rating)} 
-                                            </div>
-                                            <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                                Игр: {ratingUsers.top[0].games} | Верных ответов: {ratingUsers.top[0].right_answers}
-                                            </div>
+                    {
+                        ratingUsers.top !== undefined &&
+                        <div style={{paddingTop: '2vh', paddingBottom: '2vh', fontFamily: 'Montserrat', color: 'white'}}>
+                            <CardGrid>
+                                <Card className='firstGold' size="l" mode="shadow">
+                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
+                                        <div style={{margin: '0 auto'}}>
+                                            <Avatar size={80} src={ratingUsers.top[0].photo_max}/>
                                         </div>
-                                    </Card>
-                                    <Card className='secondSilver' size="m" mode="shadow">
-                                        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
-                                            <div style={{margin: '0 auto'}}>
-                                                <Avatar size={64} src={ratingUsers.top[1].photo_max}/>
-                                            </div>
-                                            <div>
-                                                {ratingUsers.top[1].first_name} {ratingUsers.top[1].last_name}
-                                            </div>
-                                            <div style={{fontSize: '1.1em', fontWeight: 500}}>
-                                                {scoreDeclination(ratingUsers.top[1].rating)} 
-                                            </div>
-                                            <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                                {ratingUsers.top[1].games} | {ratingUsers.top[1].right_answers}
-                                            </div>
+                                        <div style={{fontSize: '1.2em'}}>
+                                            {ratingUsers.top[0].first_name} {ratingUsers.top[0].last_name}
                                         </div>
-                                    </Card>
-                                    <Card className='thirdBronse' size="m" mode="shadow">
-                                        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
-                                            <div style={{margin: '0 auto'}}>
-                                                <Avatar size={64} src={ratingUsers.top[2].photo_max}/>
-                                            </div>
-                                            <div>
-                                                {ratingUsers.top[2].first_name} {ratingUsers.top[2].last_name}
-                                            </div>
-                                            <div style={{fontSize: '1.1em', fontWeight: 500}}>
-                                                {scoreDeclination(ratingUsers.top[2].rating)} 
-                                            </div>
-                                            <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                                {ratingUsers.top[2].games} | {ratingUsers.top[2].right_answers}
-                                            </div>
+                                        <div style={{fontSize: '1.4em', fontWeight: 500}}>
+                                            {scoreDeclination(ratingUsers.top[0].rating)} 
                                         </div>
-                                    </Card>
-                                </CardGrid>
-                            </div>
-                        }
-                        <Separator></Separator>
-                        <List>
+                                        <div style={{fontSize: '1.1em', fontWeight: 400}}>
+                                            Игр: {ratingUsers.top[0].games} | Верных ответов: {ratingUsers.top[0].right_answers}
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card className='secondSilver' size="m" mode="shadow">
+                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
+                                        <div style={{margin: '0 auto'}}>
+                                            <Avatar size={64} src={ratingUsers.top[1].photo_max}/>
+                                        </div>
+                                        <div>
+                                            {ratingUsers.top[1].first_name} {ratingUsers.top[1].last_name}
+                                        </div>
+                                        <div style={{fontSize: '1.1em', fontWeight: 500}}>
+                                            {scoreDeclination(ratingUsers.top[1].rating)} 
+                                        </div>
+                                        <div style={{fontSize: '1.1em', fontWeight: 400}}>
+                                            {ratingUsers.top[1].games} | {ratingUsers.top[1].right_answers}
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card className='thirdBronse' size="m" mode="shadow">
+                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
+                                        <div style={{margin: '0 auto'}}>
+                                            <Avatar size={64} src={ratingUsers.top[2].photo_max}/>
+                                        </div>
+                                        <div>
+                                            {ratingUsers.top[2].first_name} {ratingUsers.top[2].last_name}
+                                        </div>
+                                        <div style={{fontSize: '1.1em', fontWeight: 500}}>
+                                            {scoreDeclination(ratingUsers.top[2].rating)} 
+                                        </div>
+                                        <div style={{fontSize: '1.1em', fontWeight: 400}}>
+                                            {ratingUsers.top[2].games} | {ratingUsers.top[2].right_answers}
+                                        </div>
+                                    </div>
+                                </Card>
+                            </CardGrid>
+                        </div>
+                    }
+                    <Separator></Separator>
+                    <List>
                             {   
                                 ratingUsers.top !== undefined &&
                                 ratingUsers.top.slice(3).map((user, index) => {
@@ -103,7 +102,7 @@ class Rating extends React.Component {
                                 })
                             }
                         </List>
-                    </PullToRefresh>
+
                     {   
                         ratingUsers.top !== undefined && ratingUsers.current_user !== undefined &&
                         <FixedLayout vertical="bottom">

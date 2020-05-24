@@ -1,11 +1,12 @@
 import React from 'react';
+import bridge from '@vkontakte/vk-bridge';
 // import PropTypes from 'prop-types';
 import { Panel, PanelHeader, Button, PanelSpinner } from '@vkontakte/vkui';
 import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import Icon28ArrowRightOutline from '@vkontakte/icons/dist/28/arrow_right_outline';
 import Icon28GraphOutline from '@vkontakte/icons/dist/28/graph_outline';
 
-import {PHRASES} from '../Config'
+import {PHRASES, STORY_STICKERS, STORY_SCORE_LINKS } from '../Config'
 import {scoreDeclination, countRights, ratingShift} from '../Utils'
 
 class LGGameEnd extends React.Component {
@@ -25,6 +26,54 @@ class LGGameEnd extends React.Component {
     if (e.currentTarget.dataset.panel === 'statpanel'){
       this.props.viewGameStat()
     }
+  }
+
+  createSroreStory(lg){
+    console.log(lg)
+    bridge.send("VKWebAppShowStoryBox",
+    {
+      "background_type": "image",
+      "url": STORY_SCORE_LINKS[countRights(this.props.lastGame) - 1],
+      "locked": true,
+      "stickers": [
+        {
+          "sticker_type": "renderable",
+          "sticker": {
+            "can_delete": 0,
+            "content_type": "image",
+            "url": STORY_STICKERS.open_dogeo_rotate,
+            "clickable_zones": [
+              {
+                "action_type": "link",
+                "action": {
+                  "link": "https://vk.com/app7459253",
+                  "tooltip_text_key": "Открыть приложение"
+                },
+                "clickable_area": [
+                  {
+                    "x": 8,
+                    "y": 7
+                  },
+                  {
+                    "x": 703,
+                    "y": 7
+                  },
+                  {
+                    "x": 703,
+                    "y": 381
+                  },
+                  {
+                    "x": 8,
+                    "y": 381
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+    );
   }
 
 	render() {
@@ -49,7 +98,7 @@ class LGGameEnd extends React.Component {
             Вы заработали {ratingGame ? '' : "бы"} {scoreDeclination(ratingShift(lastGame))}!
           </div>
           <div style={{position: 'relative', paddingTop: '5vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '10%', paddingRight: '10%'}}>
-            <Button stretched className="buttonPurple" style={{width: '40%', marginRight: '2%'}} before={<Icon28StoryOutline />}>
+            <Button stretched className="buttonPurple" style={{width: '40%', marginRight: '2%'}} before={<Icon28StoryOutline />} onClick={lastGame => this.createSroreStory(lastGame)}>
               Поделиться в истории
             </Button>
             <Button stretched

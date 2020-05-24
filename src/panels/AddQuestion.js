@@ -1,17 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, PanelHeader, Button, Div, Header, Group, SimpleCell, Switch, PanelHeaderButton, ModalPage,
-  ModalRoot, ModalPageHeader, FormLayout, Input, Select, FormStatus } from '@vkontakte/vkui';
-import Icon24Back from '@vkontakte/icons/dist/24/back'
-import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
-import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
-import Icon28MessageOutline from '@vkontakte/icons/dist/28/message_outline';
-import Icon28GiftOutline from '@vkontakte/icons/dist/28/gift_outline';
-import Icon28InboxOutline from '@vkontakte/icons/dist/28/inbox_outline';
-import Icon28DeleteOutlineAndroid from '@vkontakte/icons/dist/28/delete_outline_android';
-import Icon28PrivacyOutline from '@vkontakte/icons/dist/28/privacy_outline';
+import { Panel, PanelHeader, Button, FormLayout, Input, Select, FormStatus, FormLayoutGroup } from '@vkontakte/vkui';
+import axios from 'axios';
 
-import bridge from '@vkontakte/vk-bridge';
+import { BACKEND } from '../Config';
 
 class AddQuestion extends React.Component {
 	constructor(props) {
@@ -25,18 +17,23 @@ class AddQuestion extends React.Component {
             tags: '',
             source: '',
             addedby: '',
+            addedlink: ''
         }
+
     }
+    
+    
 
     onChange(e) {
         const { name, value } = e.currentTarget;
-        this.setState({ [name]: value, addedby: this.props.user.first_name });
+        this.setState({ [name]: value });
+        this.setState({addedlink: 'vk.com/id' + this.props.user.id})
     }
     
     send(){
         if (this.state.firstPart && this.state.number && this.state.units && this.state.country){
-            this.setState({addedby: this.props.user.first_name})
-            this.props.sendQuestion(this.state)
+            axios.post(BACKEND + '/api/v1/add_user_question', this.state)
+            this.props.showSnackbar()
             this.props.goBack()
         } else {
             this.setState({no_all_fields: true})
@@ -44,7 +41,7 @@ class AddQuestion extends React.Component {
     }
 
 	render() {
-        let { id, sendQuestion } = this.props
+        let { id } = this.props
 		return (
             <Panel id={id}>
             {
@@ -61,24 +58,31 @@ class AddQuestion extends React.Component {
                         type='text'
                         top="Первая часть вопроса"
                         name="firstPart"
+                        placeholder='Россия имеет'
                         onChange={(e) => this.onChange(e)}
+                        maxLength={85}
                     />
                     <Input
-                        type='text'
+                        type='number'
                         top="Число"
                         name="number"
+                        placeholder='18'
                         onChange={(e) => this.onChange(e)}
+                        maxLength={20}
                     />
                     <Input
                         type='text'
                         top="Единицы измерения"
                         name="units"
+                        placeholder='сухопутных границ'
                         onChange={(e) => this.onChange(e)}
+                        maxLength={45}
                     />
                     <Input
                         type='text'
-                        top="Тэги через запятую или пробел"
+                        top="Теги через запятую или пробел"
                         name="tags"
+                        placeholder='Россия, Население'
                         onChange={(e) => this.onChange(e)}
                     />
                     <Select top="Страна" placeholder="Выберите страну" name="country" onChange={(e) => this.onChange(e)}>
@@ -86,12 +90,21 @@ class AddQuestion extends React.Component {
                         <option value="world">Мир</option>
                         <option value="other">Другая</option>
                     </Select>
-                    <Input
-                        type='text'
-                        top="Ссылка на достоверный источник"
-                        name="source"
-                        onChange={(e) => this.onChange(e)}
-                    />
+                    <FormLayoutGroup top="Ссылка на достоверный источник" bottom="Если у Вас нет ссылки на источник, оставьте поле пустым">
+                        <Input
+                            type='text'
+                            name="source"
+                            onChange={(e) => this.onChange(e)}
+                            maxLength={200}
+                        />
+                    </FormLayoutGroup>
+                    <FormLayoutGroup top="Никнейм" bottom="Будет указан на панели просмотра вопросов">
+                        <Input
+                            type='text'
+                            name="addedby"
+                            onChange={(e) => this.onChange(e)}
+                        />
+                    </FormLayoutGroup>
                     <Button size='xl' className='buttonPurple' onClick={() => this.send()}>
                         Отправить вопрос
                     </Button>

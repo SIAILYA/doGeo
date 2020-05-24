@@ -58,7 +58,7 @@ class GameStatCard extends React.Component {
                                                 )
                                             } else {
                                                 return(
-                                                    <Button key={index} mode="overlay_secondary" disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
+                                                    <Button key={index} className="buttonGray" disabled style={{marginRight: '2%', borderRadius: 100, opacity: 1}}>
                                                         {index + 1}
                                                     </Button>
                                                 )

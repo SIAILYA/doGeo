@@ -6,6 +6,10 @@ import Icon28StoryOutline from '@vkontakte/icons/dist/28/story_outline';
 import {scoreDeclination} from '../Utils'
 import GameStatCard from '../panels/elemenst/GameStatCard'
 
+import bridge from '@vkontakte/vk-bridge';
+import {STORY_STICKERS, STORY_LINKS} from '../Config'
+import { getRandomArrayElement } from '../Utils';
+
 
 class Statistics extends React.Component {
 	constructor(props) {
@@ -16,6 +20,53 @@ class Statistics extends React.Component {
 
         this.props.get_stat()
     }
+
+    createStory() {
+        bridge.send("VKWebAppShowStoryBox",
+        {
+          "background_type": "image",
+          "url": getRandomArrayElement(STORY_LINKS),
+          "locked": true,
+          "stickers": [
+            {
+              "sticker_type": "renderable",
+              "sticker": {
+                "can_delete": 0,
+                "content_type": "image",
+                "url": STORY_STICKERS.open_dogeo_rotate,
+                "clickable_zones": [
+                  {
+                    "action_type": "link",
+                    "action": {
+                      "link": "https://vk.com/app7459253",
+                      "tooltip_text_key": "Открыть приложение"
+                    },
+                    "clickable_area": [
+                      {
+                        "x": 8,
+                        "y": 7
+                      },
+                      {
+                        "x": 703,
+                        "y": 7
+                      },
+                      {
+                        "x": 703,
+                        "y": 381
+                      },
+                      {
+                        "x": 8,
+                        "y": 381
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+        );
+      }
 
  
 	render() {
@@ -30,7 +81,7 @@ class Statistics extends React.Component {
                             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
                                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: "center" }}>
                                     <div style={{paddingRight: '2%'}}>
-                                        <Avatar size={80} src={user.photo_max_orig}/>
+                                        <Avatar size={80} src={user.photo_200}/>
                                     </div>
                                     <div style={{fontSize: '1.2em', paddingLeft: '2%', margin: 'auto 0'}}>
                                         <div>
@@ -45,7 +96,7 @@ class Statistics extends React.Component {
                                     Игр: {user_stat.games} | Верных ответов: {user_stat.right_answers}
                                 </div>
                                 <div style={{paddingTop: '2%'}}>
-                                    <Button className="buttonPurple" before={<Icon28StoryOutline />}>
+                                    <Button className="buttonPurple" before={<Icon28StoryOutline />} onClick={this.createStory}>
                                         Рассказать в истории
                                     </Button>
                                 </div>

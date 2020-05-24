@@ -140,6 +140,9 @@ class App extends React.Component {
 				if (activeElement === 'pa_lggameendpanel') {
 					this.setState({mainview: 'gameview', gamepanel: 'lggameendpanel'})
 				}
+				if (activeElement === 'pa_searchpanel'){
+					this.setState({mainview: 'epicview', activeStory: 'questions'})
+				}
 			}
 			if (activeElement.slice(0, 2) === 'vi') {
 				if (activeElement === 'vi_gameview') {
@@ -315,8 +318,9 @@ class App extends React.Component {
 		window.history.pushState({view: 'pa_questionadd'}, 'pa_questionadd');
 	}
 
-	sendQuestion(question){
-		axios.post(BACKEND + '/api/v1/add_user_question', question)
+	showSnackbar() {
+		this.setState({snackbar: true})
+		setTimeout(() => {this.setState({snackbar: true})}, 3000)
 	}
 
 	render() {
@@ -416,15 +420,17 @@ class App extends React.Component {
 									scheme={this.state.scheme}
 									user={this.state.fetchedUser}
 									addQuestion={() => this.addQuestion()}
+									snackbar={this.state.snackbar}
 								/>
 								<AddQuestion
 									id='addpanel'
 									sendQuestion={this.sendQuestion}
 									user={this.state.fetchedUser}
 									goBack={() => this.goBack()}
+									showSnackbar={() => this.showSnackbar()}
 								/>
 							</View>
-					</Epic>
+						</Epic>
 					</Panel>
 				</View>
 				<View id="emptyview" activePanel="spinnerpanel">

@@ -76,8 +76,8 @@ class Start extends React.Component {
                                             <div>
                                                 {
                                                     question.answered === true
-                                                    ? <p style={{color: '#76c976'}}>Вы ответили {question.user_number > question.number ? 'меньше' : 'больше'} - верно! <span style={{fontSize: '0.7em'}}>({question.user_number} {question.user_number > question.number ? '>' : '<'} {question.number})</span></p>
-                                                    : <p style={{color: '#a31f21'}}>Вы ответили {question.user_number > question.number ? 'меньше' : 'больше'} - неверно! <span style={{fontSize: '0.7em'}}>({question.user_number} {question.user_number > question.number ? '>' : '<'} {question.number})</span></p>
+                                                    ? <p style={{color: '#76c976'}}>Вы ответили {question.user_number > question.number ? 'меньше' : 'больше'} - верно! <span style={{fontSize: '0.7em'}}>({question.number} {question.number > question.user_number ? '>' : '<'} {question.user_number})</span></p>
+                                                    : <p style={{color: '#a31f21'}}>Вы ответили {question.user_number > question.number ? 'больше' : 'меньше'} - неверно! <span style={{fontSize: '0.7em'}}>({question.number} {question.number > question.user_number ? '>' : '<'} {question.user_number})</span></p>
                                                 }
                                             </div>
                                         </div>

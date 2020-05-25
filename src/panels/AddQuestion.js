@@ -27,7 +27,7 @@ class AddQuestion extends React.Component {
     onChange(e) {
         const { name, value } = e.currentTarget;
         this.setState({ [name]: value });
-        this.setState({addedlink: 'vk.com/id' + this.props.user.id})
+        this.setState({addedlink: 'https://vk.com/id' + this.props.user.id})
     }
     
     send(){

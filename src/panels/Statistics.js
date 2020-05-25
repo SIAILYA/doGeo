@@ -109,7 +109,7 @@ class Statistics extends React.Component {
                 <Group>
                     {
                         user_stat.game_history &&
-                        user_stat.game_history.slice(0, 30).reverse().map((game, index) => {
+                        user_stat.game_history.slice(-30).reverse().map((game, index) => {
                             return(
                                 <GameStatCard key={index} game_object={game}/>
                             )

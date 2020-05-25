@@ -83,7 +83,7 @@ class App extends React.Component {
 		this.getLGSearchTags()
 	}
 
-	componentDidMount() {
+	UNSAFE_componentWillMount() {
 		window.addEventListener('popstate', () => this.goBack());
 		bridge.send('VKWebAppGetUserInfo');
 		bridge.subscribe((e) => {
@@ -113,7 +113,7 @@ class App extends React.Component {
 				}
 			}
 		})
-		if (this.state.LGsearchTags !== null){
+		if (this.state.LGsearchTags !== null && this.state.fetchedUser !== ''){
 			this.setState({epiclock: false})
 		}
 	}

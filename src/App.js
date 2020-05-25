@@ -64,21 +64,26 @@ class App extends React.Component {
 			ratingGame: false,
 			beforeRating: null,
 			searchTags: [],
-			searchMode: 1, //1 - include 0 - exclude
+			searchMode: 0, //1 - include 0 - exclude
 			freePlayTags: [],
+			freePlayMode: 0,
 			freePlayCount: 7,
-			userStatistics: null
+			userStatistics: null,
+			LGSearchTags: null,
 		};
 
 		this.onStoryChange = this.onStoryChange.bind(this);
+		this.changeMode = this.changeMode.bind(this);
+		this.changeTags = this.changeTags.bind(this);
 		
 		this.checkServer()
 		setInterval(() => this.checkServer(), 30000)
 		this.getRatingPlayAccess()
 		this.getUserStatistics()
+		this.getLGSearchTags()
 	}
 
-	componentDidMount() {	
+	componentDidMount() {
 		window.addEventListener('popstate', () => this.goBack());
 		bridge.send('VKWebAppGetUserInfo');
 		bridge.subscribe((e) => {
@@ -95,7 +100,7 @@ class App extends React.Component {
 						if (!e.detail.data.keys[i].value || e.detail.data.keys[i].value === 'false'){
 							this.setState({mainview: 'learnview'})
 						} else {
-							this.setState({mainview: 'epicview', epiclock: false})
+							this.setState({mainview: 'epicview'})
 						}
 					}
 					if (e.detail.data.keys[i].key === 'endLGLearning') {
@@ -108,6 +113,9 @@ class App extends React.Component {
 				}
 			}
 		})
+		if (this.state.LGsearchTags !== null){
+			this.setState({epiclock: false})
+		}
 	}
 
 	updateTheme() {
@@ -215,7 +223,8 @@ class App extends React.Component {
 				current_user_id: this.state.fetchedUser.id,
 				count: rating ? 7 : this.state.freePlayCount,
 				rating_game: this.state.ratingGame,
-				exclude_tags: this.state.freePlayTags
+				freePlayTags: this.state.freePlayTags,
+				freePlayMode: this.state.freePlayMode
 			}
 			axios.post(BACKEND + '/api/v1/get_lg_questions', settings)
 			.then(res => {
@@ -234,9 +243,11 @@ class App extends React.Component {
 	}
 
 	getFeedQuestions(){
+		this.setState({loadingQuestions: true})
 		let settings = {
-			offset: this.state.questionsFeed.length,
-			search_exclude: this.state.searchTags
+			offset: 0,
+			search_tags: this.state.searchTags,
+			search_mode: this.state.searchMode
 		}
         axios.post(BACKEND + '/api/v1/get_feed_questions', settings)
         .then(res =>{
@@ -248,7 +259,8 @@ class App extends React.Component {
 		this.setState({loadingQuestions: true})
 		let settings = {
 			offset: this.state.questionsFeed.length,
-			search_exclude: this.state.searchTags
+			search_tags: this.state.searchTags,
+			search_mode: this.state.searchMode
 		}
         axios.post(BACKEND + '/api/v1/get_feed_questions', settings)
         .then(res =>{
@@ -260,7 +272,15 @@ class App extends React.Component {
         })
 	}
 
+	getLGSearchTags(){
+		axios.post(BACKEND + '/api/v1/get_lg_search_tags')
+		.then(res => {
+			this.setState({LGSearchTags: res.data.tags})
+		})
+	}
+
 	openSearch(){
+		this.getLGSearchTags()
 		this.setState({questionsPanel: 'searchpanel'})
 		const history = [...this.state.history];
 		history.push('pa_searchpanel');
@@ -321,6 +341,45 @@ class App extends React.Component {
 	showSnackbar() {
 		this.setState({snackbar: true})
 		setTimeout(() => {this.setState({snackbar: true})}, 3000)
+	}
+
+	saveSearch() {
+		this.goBack()
+		this.getFeedQuestions()
+	}
+
+	changeMode(e) {
+		this.setState({searchMode: parseInt(e.currentTarget.value)})
+		let st = this.state.searchTags
+		if (e.currentTarget.value === "1"){
+			for (let i = 0; i < this.state.LGSearchTags.length; i++){
+				if (this.state.searchTags.indexOf(this.state.LGSearchTags[i]) !== -1){
+					st.splice(this.state.searchTags.indexOf(this.state.LGSearchTags[i]), 1)
+				} else {
+					st.push(this.state.LGSearchTags[i])
+				}
+			}
+		} else {
+			for (let i = 0; i < this.state.LGSearchTags.length; i++){
+				if (this.state.searchTags.indexOf(this.state.LGSearchTags[i]) !== -1){
+					st.splice(this.state.searchTags.indexOf(this.state.LGSearchTags[i]), 1)
+				} else {
+					st.push(this.state.LGSearchTags[i])
+				}
+			}
+		}
+		this.setState({searchTags: st})
+	}
+
+	changeTags(e) {
+		let st = this.state.searchTags
+		let tag = e.currentTarget.value
+		if (st.indexOf(tag) !== -1){
+			st.splice(this.state.searchTags.indexOf(tag), 1)
+		} else {
+			st.push(tag)
+		}
+		this.setState({searchTags: st})
 	}
 
 	render() {
@@ -403,6 +462,13 @@ class App extends React.Component {
 									loadingQuestions={this.state.loadingQuestions}
 									questionsPanel={this.state.questionsPanel}
 									openSearch={() => this.openSearch()}
+									searchMode={this.state.searchMode}
+									searchTags={this.state.searchTags}
+									setSearchSettings={() => this.setSearchSettings()}
+									LGsearchTags={this.state.LGSearchTags}
+									changeMode={this.changeMode}
+									changeTags={this.changeTags}
+									saveSearch={() => this.saveSearch()}
 								/>
 							</View>
 							<View id="statistics" activePanel="statisticspanel">

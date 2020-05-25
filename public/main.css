@@ -124,6 +124,10 @@
   background: linear-gradient(135deg, #f53f8e, 50%, #f5226f);
 }
 
+.purpleButton{
+  background: linear-gradient(135deg, #f53f8e, 50%, #f5226f);
+}
+
 .buttonGray{
   background: #bdc3c7!important;
 }
@@ -159,4 +163,17 @@
 
 .wrongAnswer{
   background: linear-gradient(45deg, #74ca4b, #a8e063)!important;
+}
+
+.Radio__icon{
+  border-color: var(--purple-dark)!important;
+}
+
+.Radio__icon::after{
+  background-color: var(--purple-dark)!important;
+}
+
+.Checkbox__input:checked~.Checkbox__container .Checkbox__icon{
+  background-color: var(--purple-dark)!important;
+  border-color: var(--purple-light)!important;
 }

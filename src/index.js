@@ -8,9 +8,6 @@ import App from "./App";
 // Init VK  Mini App
 bridge.send("VKWebAppInit");
 bridge.send('VKWebAppGetUserInfo');
-
-// bridge.send("VKWebAppStorageSet", {"key": "endLearning", "value": 'false'})
-// bridge.send("VKWebAppStorageSet", {"key": "endLGLearning", "value": 'false'})
                     
 bridge.send("VKWebAppStorageGet", {"keys": ["endLearning", 'endLGLearning']});
 

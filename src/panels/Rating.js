@@ -50,36 +50,44 @@ class Rating extends React.Component {
                                         </div>
                                     </div>
                                 </Card>
-                                <Card className='secondSilver' size="m" mode="shadow">
-                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
-                                        <div style={{margin: '0 auto'}}>
-                                            <Avatar size={64} src={ratingUsers.top[1].photo_max}/>
-                                        </div>
-                                        <div>
-                                            {ratingUsers.top[1].first_name} {ratingUsers.top[1].last_name}
-                                        </div>
-                                        <div style={{fontSize: '1.1em', fontWeight: 500}}>
-                                            {scoreDeclination(ratingUsers.top[1].rating)} 
-                                        </div>
-                                        <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                            {ratingUsers.top[1].games} | {ratingUsers.top[1].right_answers}
-                                        </div>
+                                <Card className='secondSilver' size="l" mode="shadow">
+                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '0.5vh', paddingBottom: '0.5vh', height: '100%' }}>
+                                        <SimpleCell disabled style={{ margin: 'auto' }}>
+                                            <div style={{display: 'flex', flexDirection: 'row'}}>
+                                                <div style={{paddingRight: '5%'}}>
+                                                    <Avatar size={64} src={ratingUsers.top[1].photo_max}/>
+                                                </div>
+                                                <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column'}}>
+                                                    {ratingUsers.top[1].first_name} {ratingUsers.top[1].last_name}
+                                                    <div style={{fontSize: '1.1em', fontWeight: 500}}>
+                                                        {scoreDeclination(ratingUsers.top[1].rating)} 
+                                                    </div>
+                                                    <div style={{fontSize: '1.1em', fontWeight: 400}}>
+                                                        {ratingUsers.top[1].games} | {ratingUsers.top[1].right_answers}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </SimpleCell>
                                     </div>
                                 </Card>
-                                <Card className='thirdBronse' size="m" mode="shadow">
-                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '1vh', paddingBottom: '1vh' }}>
-                                        <div style={{margin: '0 auto'}}>
-                                            <Avatar size={64} src={ratingUsers.top[2].photo_max}/>
-                                        </div>
-                                        <div>
-                                            {ratingUsers.top[2].first_name} {ratingUsers.top[2].last_name}
-                                        </div>
-                                        <div style={{fontSize: '1.1em', fontWeight: 500}}>
-                                            {scoreDeclination(ratingUsers.top[2].rating)} 
-                                        </div>
-                                        <div style={{fontSize: '1.1em', fontWeight: 400}}>
-                                            {ratingUsers.top[2].games} | {ratingUsers.top[2].right_answers}
-                                        </div>
+                                <Card className='thirdBronse' size="l" mode="shadow">
+                                    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', paddingTop: '0.5vh', paddingBottom: '0.5vh', height: '100%' }}>
+                                        <SimpleCell disabled style={{ margin: 'auto' }}>
+                                            <div style={{display: 'flex', flexDirection: 'row'}}>
+                                                <div style={{paddingRight: '5%'}}>
+                                                    <Avatar size={64} src={ratingUsers.top[2].photo_max}/>
+                                                </div>
+                                                <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column'}}>
+                                                    {ratingUsers.top[2].first_name} {ratingUsers.top[2].last_name}
+                                                    <div style={{fontSize: '1.1em', fontWeight: 500}}>
+                                                        {scoreDeclination(ratingUsers.top[2].rating)} 
+                                                    </div>
+                                                    <div style={{fontSize: '1.1em', fontWeight: 400}}>
+                                                        {ratingUsers.top[2].games} | {ratingUsers.top[2].right_answers}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </SimpleCell>
                                     </div>
                                 </Card>
                             </CardGrid>

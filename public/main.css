@@ -177,3 +177,9 @@
   background-color: var(--purple-dark)!important;
   border-color: var(--purple-light)!important;
 }
+
+.secondSilver::after, .thirdBronse::after{
+  content: "";
+  position: absolute;
+  height: 100%;
+}

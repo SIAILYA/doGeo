@@ -61,6 +61,7 @@ class AddQuestion extends React.Component {
                         placeholder='Россия имеет'
                         onChange={(e) => this.onChange(e)}
                         maxLength={85}
+                        autocomplete="off"
                     />
                     <Input
                         type='number'
@@ -69,6 +70,8 @@ class AddQuestion extends React.Component {
                         placeholder='18'
                         onChange={(e) => this.onChange(e)}
                         maxLength={20}
+                        max={999999999}
+                        autocomplete="off"
                     />
                     <Input
                         type='text'
@@ -77,6 +80,7 @@ class AddQuestion extends React.Component {
                         placeholder='сухопутных границ'
                         onChange={(e) => this.onChange(e)}
                         maxLength={45}
+                        autocomplete="off"
                     />
                     <Input
                         type='text'
@@ -84,6 +88,8 @@ class AddQuestion extends React.Component {
                         name="tags"
                         placeholder='Россия, Население'
                         onChange={(e) => this.onChange(e)}
+                        maxLength={40}
+                        autocomplete="off"
                     />
                     <Select top="Страна" placeholder="Выберите страну" name="country" onChange={(e) => this.onChange(e)}>
                         <option value="ru">Россия</option>
@@ -95,7 +101,8 @@ class AddQuestion extends React.Component {
                             type='text'
                             name="source"
                             onChange={(e) => this.onChange(e)}
-                            maxLength={200}
+                            maxLength={1000}
+                            autocomplete="off"
                         />
                     </FormLayoutGroup>
                     <FormLayoutGroup top="Никнейм" bottom="Будет указан на панели просмотра вопросов">
@@ -103,6 +110,8 @@ class AddQuestion extends React.Component {
                             type='text'
                             name="addedby"
                             onChange={(e) => this.onChange(e)}
+                            maxLength={25}
+                            autocomplete="off"
                         />
                     </FormLayoutGroup>
                     <Button size='xl' className='buttonPurple' onClick={() => this.send()}>

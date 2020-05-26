@@ -88,13 +88,13 @@ class LGGameEnd extends React.Component {
           <div style={{fontSize: '5vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '3vh'}}>
             Игра окончена!
           </div>
-          <div style={{fontSize: '12vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '15vh'}}>
+          <div style={{fontSize: '12vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '7vh', paddingBottom: '7vh'}}>
             {countRights(lastGame)}/{lastGame.length}
           </div>
-          <div style={{fontSize: '3vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '5vh'}}>
+          <div style={{fontSize: '3vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)"}}>
             {PHRASES[countRights(lastGame) - 1]}
           </div>
-          <div style={{fontSize: '2vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '5vh'}}>
+          <div style={{fontSize: '2vh', fontFamily: "Montserrat", fontWeight: 500, textAlign: "center", color: "var(--purple-dark)", paddingTop: '3vh'}}>
             Вы заработали {ratingGame ? '' : "бы"} {scoreDeclination(ratingShift(lastGame))}!
           </div>
           <div style={{position: 'relative', paddingTop: '5vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '10%', paddingRight: '10%'}}>
@@ -111,7 +111,7 @@ class LGGameEnd extends React.Component {
               Подробнее
             </Button>
           </div>
-          <div style={{position: 'relative', left: '10%', width: '80%', paddingTop: '15vh'}}>
+          <div style={{position: 'relative', left: '10%', width: '80%', paddingTop: '2vh'}}>
             <Button
               stretched
               size='xl'

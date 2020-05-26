@@ -392,132 +392,133 @@ class App extends React.Component {
 				this.state.serverError === null || this.state.serverError === false
 				? 
 				<Root activeView={this.state.mainview}>
-				<View id="epicview" activePanel="epicpanel"
-					onSwipeBack={this.goBack}
-          			history={this.state.history}
-					popout={this.state.epiclock ? <ScreenSpinner /> : null}>
-					<Panel id="epicpanel">
-						<Epic
-							activeStory={this.state.activeStory}
-							tabbar={
-							<Tabbar>
-								<TabbarItem
-									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'play'}
-									data-story="play"
-								><Icon28Play />
-								</TabbarItem>
-								<TabbarItem
-									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'questions'}
-									data-story="questions"
-								><Icon28BrainOutline />
-								</TabbarItem>
-								<TabbarItem
-									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'rating'}
-									data-story="rating"
-								><Icon28GraphOutline />
-								</TabbarItem>
-								<TabbarItem
-									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'statistics'}
-									data-story="statistics"
-								><Icon28HistoryBackwardOutline />
-								</TabbarItem>
-								<TabbarItem
-									onClick={this.onStoryChange}
-									selected={this.state.activeStory === 'more'}
-									data-story="more"
-								><Icon28MenuOutline />
-								</TabbarItem>
-							</Tabbar>
-						}>
-							<View id="play" activePanel="playpanel">
-								<Start
-									id="playpanel"
-									scheme={this.state.scheme}
-									startGame={this.prepareGame.bind(this)}
-									startLearning={this.startGameLearning.bind(this)}
-									learnLG={this.state.learnLG}
-									history={this.state.history}
+					<View id="epicview" activePanel="epicpanel"
+						onSwipeBack={this.goBack}
+						history={this.state.history}
+						popout={this.state.epiclock ? <ScreenSpinner /> : null}>
+						<Panel id="epicpanel">
+							<Epic
+								activeStory={this.state.activeStory}
+								tabbar={
+								<Tabbar>
+									<TabbarItem
+										onClick={this.onStoryChange}
+										selected={this.state.activeStory === 'play'}
+										data-story="play"
+									><Icon28Play />
+									</TabbarItem>
+									<TabbarItem
+										onClick={this.onStoryChange}
+										selected={this.state.activeStory === 'questions'}
+										data-story="questions"
+									><Icon28BrainOutline />
+									</TabbarItem>
+									<TabbarItem
+										onClick={this.onStoryChange}
+										selected={this.state.activeStory === 'rating'}
+										data-story="rating"
+									><Icon28GraphOutline />
+									</TabbarItem>
+									<TabbarItem
+										onClick={this.onStoryChange}
+										selected={this.state.activeStory === 'statistics'}
+										data-story="statistics"
+									><Icon28HistoryBackwardOutline />
+									</TabbarItem>
+									<TabbarItem
+										onClick={this.onStoryChange}
+										selected={this.state.activeStory === 'more'}
+										data-story="more"
+									><Icon28MenuOutline />
+									</TabbarItem>
+								</Tabbar>
+								}
+							>
+								<View id="play" activePanel="playpanel">
+									<Start
+										id="playpanel"
+										scheme={this.state.scheme}
+										startGame={this.prepareGame.bind(this)}
+										startLearning={this.startGameLearning.bind(this)}
+										learnLG={this.state.learnLG}
+										history={this.state.history}
+										/>
+								</View>
+								<View id="rating" activePanel="ratingview">
+									<Rating
+										id='ratingview'
+										loadingRating={this.state.loadingRating}
+										ratingUsers={this.state.ratingUsers}
+										loadRating={() => this.getGlobalRating()}
+										fetchedUser={this.state.fetchedUser}
 									/>
-							</View>
-							<View id="rating" activePanel="ratingview">
-								<Rating
-									id='ratingview'
-									loadingRating={this.state.loadingRating}
-									ratingUsers={this.state.ratingUsers}
-									loadRating={() => this.getGlobalRating()}
-									fetchedUser={this.state.fetchedUser}
-								/>
-							</View>
-							<View id="questions" activePanel="questionsview">
-								<Questions 
-									id='questionsview'
-									history={this.state.history}
-									questionsList={this.state.questionsFeed}
-									getFirstQuestions={() => this.getFeedQuestions()}
-									addQuestions={() => this.addFeedQuestions()}
-									loadingQuestions={this.state.loadingQuestions}
-									questionsPanel={this.state.questionsPanel}
-									openSearch={() => this.openSearch()}
-									searchMode={this.state.searchMode}
-									searchTags={this.state.searchTags}
-									setSearchSettings={() => this.setSearchSettings()}
-									LGsearchTags={this.state.LGSearchTags}
-									changeMode={this.changeMode}
-									changeTags={this.changeTags}
-									saveSearch={() => this.saveSearch()}
-								/>
-							</View>
-							<View id="statistics" activePanel="statisticspanel">
-								<Statistics
-									id='statisticspanel'
-									user={this.state.fetchedUser}
-									user_stat={this.state.userStatistics}
-									get_stat={() => this.getUserStatistics()}
-								/>
-							</View>
-							<View id="more" activePanel={this.state.morepanel}>
-								<More
-									id='morepanel'
-									themeUpdate={() => this.updateTheme()}
-									scheme={this.state.scheme}
-									user={this.state.fetchedUser}
-									addQuestion={() => this.addQuestion()}
-									snackbar={this.state.snackbar}
-								/>
-								<AddQuestion
-									id='addpanel'
-									sendQuestion={this.sendQuestion}
-									user={this.state.fetchedUser}
-									goBack={() => this.goBack()}
-									showSnackbar={() => this.showSnackbar()}
-								/>
-							</View>
-						</Epic>
-					</Panel>
-				</View>
-				<View id="emptyview" activePanel="spinnerpanel">
-					<Panel id='spinnerpanel'>
-						<PanelSpinner />
-					</Panel>
-				</View>
-				<View id="learnview" activePanel={this.state.learnPanel}>
-					<Learn
-						id="learnpanel"
-						scheme={this.state.scheme}
-						endLearning={() => this.endLearning()}
-					/>
-					<LearnGame 
-						id="learngame"
-						gameMode={this.state.gameMode}
-						scheme={this.state.scheme}
-						endLearning={this.endGameLearning.bind(this)}
-					/>
-				</View>
-				<View id='gameview' activePanel={this.state.gamepanel}>
+								</View>
+								<View id="questions" activePanel="questionsview">
+									<Questions 
+										id='questionsview'
+										history={this.state.history}
+										questionsList={this.state.questionsFeed}
+										getFirstQuestions={() => this.getFeedQuestions()}
+										addQuestions={() => this.addFeedQuestions()}
+										loadingQuestions={this.state.loadingQuestions}
+										questionsPanel={this.state.questionsPanel}
+										openSearch={() => this.openSearch()}
+										searchMode={this.state.searchMode}
+										searchTags={this.state.searchTags}
+										setSearchSettings={() => this.setSearchSettings()}
+										LGsearchTags={this.state.LGSearchTags}
+										changeMode={this.changeMode}
+										changeTags={this.changeTags}
+										saveSearch={() => this.saveSearch()}
+									/>
+								</View>
+								<View id="statistics" activePanel="statisticspanel">
+									<Statistics
+										id='statisticspanel'
+										user={this.state.fetchedUser}
+										user_stat={this.state.userStatistics}
+										get_stat={() => this.getUserStatistics()}
+									/>
+								</View>
+								<View id="more" activePanel={this.state.morepanel}>
+									<More
+										id='morepanel'
+										themeUpdate={() => this.updateTheme()}
+										scheme={this.state.scheme}
+										user={this.state.fetchedUser}
+										addQuestion={() => this.addQuestion()}
+										snackbar={this.state.snackbar}
+									/>
+									<AddQuestion
+										id='addpanel'
+										sendQuestion={this.sendQuestion}
+										user={this.state.fetchedUser}
+										goBack={() => this.goBack()}
+										showSnackbar={() => this.showSnackbar()}
+									/>
+								</View>
+							</Epic>
+						</Panel>
+					</View>
+					<View id="emptyview" activePanel="spinnerpanel">
+						<Panel id='spinnerpanel'>
+							<PanelSpinner />
+						</Panel>
+					</View>
+					<View id="learnview" activePanel={this.state.learnPanel}>
+						<Learn
+							id="learnpanel"
+							scheme={this.state.scheme}
+							endLearning={() => this.endLearning()}
+						/>
+						<LearnGame 
+							id="learngame"
+							gameMode={this.state.gameMode}
+							scheme={this.state.scheme}
+							endLearning={this.endGameLearning.bind(this)}
+						/>
+					</View>
+					<View id='gameview' activePanel={this.state.gamepanel}>
 					<LGGameStart
 						id='lggamestartpanel'
 						allowRating={this.state.allowRating}
